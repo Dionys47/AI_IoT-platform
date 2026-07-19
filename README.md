@@ -341,37 +341,18 @@ This project is licensed under the **MIT License** – see the [LICENSE](LICENSE
 ## 👨‍💻 Author
 
 **Your Name**  
-Master’s Student in Computer Science  
-University of Tirana, Albania  
-📧 your.email@example.com  
-🐙 [GitHub](https://github.com/yourusername)
+MSc in Computer Science  
+University of VLora, Albania  
+📧 dionis12mulita@gmail.com  
+🐙 [GitHub](https://github.com/Dionys47)
 
 ---
 
 ## ⭐ Acknowledgments
 
-- **Supervisor:** Prof. Dr. [Name]  
 - **Tuya Inc.** for the IoT cloud platform  
 - **Adafruit Industries** for DHT sensor libraries  
 - **FastAPI, Scikit‑learn, Chart.js** open‑source communities
-
----
-
-## 📸 Screenshots
-
-*Add your own screenshots here*
-
-| Dashboard Overview | Device Management |
-|-------------------|--------------------|
-| ![Dashboard](screenshots/dashboard.png) | ![Devices](screenshots/devices.png) |
-
-| Anomaly Detection | 24‑Hour Prediction |
-|-------------------|--------------------|
-| ![Anomaly](screenshots/anomaly.png) | ![Prediction](screenshots/prediction.png) |
-
-| Telegram Alert |
-|----------------|
-| ![Telegram](screenshots/telegram.png) |
 
 ---
 
@@ -392,6 +373,3 @@ University of Tirana, Albania
 - Wait for at least 50 readings (IQR warm‑up).  
 - Check data quality (sensor not stuck).
 
----
-
-**Made with ❤️ for open‑source IoT research**
