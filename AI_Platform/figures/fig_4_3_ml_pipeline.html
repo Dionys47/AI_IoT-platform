@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #fff; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 40px; }
+.container { max-width: 1000px; width: 100%; text-align: center; }
+h2 { font-size: 14pt; color: #333; margin-bottom: 30px; font-weight: normal; }
+
+.pipeline { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+
+.step-row { display: flex; justify-content: center; align-items: center; gap: 20px; flex-wrap: wrap; }
+
+.step { background: #f5f5f5; border: 2px solid #78909c; border-radius: 8px; padding: 14px 20px; text-align: center; min-width: 130px; }
+.step h3 { font-size: 11pt; color: #37474f; margin-bottom: 2px; }
+.step p { font-size: 9pt; color: #666; }
+
+.step.blue { background: #e3f2fd; border-color: #42a5f5; }
+.step.blue h3 { color: #1565c0; }
+.step.green { background: #e8f5e9; border-color: #66bb6a; }
+.step.green h3 { color: #2e7d32; }
+.step.orange { background: #fff3e0; border-color: #ffa726; }
+.step.orange h3 { color: #e65100; }
+.step.purple { background: #f3e5f5; border-color: #ab47bc; }
+.step.purple h3 { color: #6a1b9a; }
+.step.red { background: #fce4ec; border-color: #ef5350; }
+.step.red h3 { color: #c62828; }
+.step.teal { background: #e0f7fa; border-color: #26c6da; }
+.step.teal h3 { color: #006064; }
+.step.brown { background: #efebe9; border-color: #8d6e63; }
+.step.brown h3 { color: #4e342e; }
+
+.arrow-down { font-size: 18pt; color: #aaa; margin: 0; }
+.arrow-right { font-size: 18pt; color: #aaa; }
+
+.sub { font-size: 8pt; color: #999; margin-top: 4px; display: block; }
+
+hr { border: none; border-top: 1px dashed #ccc; width: 80%; margin: 4px auto; }
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Figura 4.3: Pipeline ML — nga grumbullimi te parashikimi</h2>
+<div class="pipeline">
+
+  <div class="step-row">
+    <div class="step blue">
+      <h3>Grumbullim</h3>
+      <p>ESP32 + DHT22</p>
+      <span class="sub">temp, humidity çdo 5s</span>
+    </div>
+    <div class="arrow-right">→</div>
+    <div class="step blue">
+      <h3>Ruajtje</h3>
+      <p>JSON + memorie</p>
+      <span class="sub">device_id, timestamp</span>
+    </div>
+  </div>
+
+  <div class="arrow-down">↓</div>
+
+  <div class="step green">
+    <h3>Feature Engineering</h3>
+    <p>temp_lag_1 · rolling_mean_3 · temp_diff · hour_of_day</p>
+    <span class="sub">Krijohet matrica e veçorive për ML</span>
+  </div>
+
+  <div class="arrow-down">↓</div>
+
+  <div class="step-row">
+    <div class="step orange">
+      <h3>IQR Anomaly Detection</h3>
+      <p>Dritare 50 leximesh</p>
+      <span class="sub">1.5×IQR temp · 2.0×IQR lagështi</span>
+    </div>
+    <div class="arrow-right">→</div>
+    <div class="step orange">
+      <h3>Alert Telegram</h3>
+      <p>Njoftim për anomali</p>
+      <span class="sub">Temperatura, lagështia</span>
+    </div>
+  </div>
+
+  <div class="arrow-down">↓</div>
+
+  <div class="step-row">
+    <div class="step purple">
+      <h3>Random Forest</h3>
+      <p>100 pemë për pajisje</p>
+      <span class="sub">Parashikon vlerën e ardhshme</span>
+    </div>
+    <div class="arrow-right">→</div>
+    <div class="step red">
+      <h3>Regresion Polinomial</h3>
+      <p>Shkalla 1–3, auto-përzgjedhje</p>
+      <span class="sub">RMSE më i ulët fiton</span>
+    </div>
+  </div>
+
+  <div class="arrow-down">↓</div>
+
+  <div class="step-row">
+    <div class="step teal">
+      <h3>Parashikimi 24-orësh</h3>
+      <p>Trend + breza besimi 95%</p>
+      <span class="sub">Zonat portokalli / jeshile</span>
+    </div>
+    <div class="arrow-right">→</div>
+    <div class="step brown">
+      <h3>Dashboard & Vizualizim</h3>
+      <p>Chart.js në kohë reale</p>
+      <span class="sub">Grafikë, statistika, parashikime</span>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>

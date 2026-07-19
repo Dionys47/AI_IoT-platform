@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #fff; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 40px; }
+.container { max-width: 650px; width: 100%; text-align: center; }
+h2 { font-size: 14pt; color: #333; margin-bottom: 24px; font-weight: normal; }
+
+.card { background: #fff; border: 1px solid #dee2e6; border-radius: 14px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,0.06); text-align: left; }
+.card h3 { font-size: 14pt; font-weight: 700; margin-bottom: 18px; color: #333; border-bottom: 2px solid #e0e0e0; padding-bottom: 10px; }
+
+.form-group { margin-bottom: 16px; }
+.form-group label { display: block; font-size: 10pt; color: #666; font-weight: 600; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 4px; }
+.form-group input { width: 100%; padding: 10px 12px; font-size: 11pt; border: 1px solid #ccc; border-radius: 8px; background: #f8f9fa; }
+.form-group input.filled { background: #fff; border-color: #1976d2; }
+.form-group .hint { font-size: 9pt; color: #999; margin-top: 2px; }
+
+.row { display: flex; gap: 10px; align-items: end; }
+.row .form-group { flex: 1; }
+
+.status { display: inline-flex; align-items: center; gap: 6px; padding: 6px 14px; border-radius: 20px; font-size: 10pt; font-weight: 600; margin-top: 12px; }
+.status.active { background: #e8f5e9; color: #2e7d32; border: 1px solid #a5d6a7; }
+.status.inactive { background: #fce4ec; color: #c62828; border: 1px solid #ef9a9a; }
+.dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+.dot.green { background: #4caf50; }
+.dot.red { background: #f44336; }
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Figura 8.3: Konfigurimi i urës Tuya në dashboard</h2>
+<div class="card">
+  <h3>🔌 Ura Tuya</h3>
+  <div class="form-group">
+    <label>ID e aksesit</label>
+    <input class="filled" type="text" value="qwertyuiop1234567890" readonly>
+  </div>
+  <div class="form-group">
+    <label>Fshehtësia e aksesit</label>
+    <input class="filled" type="password" value="****************" readonly>
+  </div>
+  <div class="form-group">
+    <label>ID e pajisjes Tuya</label>
+    <input class="filled" type="text" value="tuya-th06-abcdef" readonly>
+    <div class="hint">Nga dashboard-i Tuya Cloud</div>
+  </div>
+  <div class="form-group">
+    <label>Lidh me pajisjen WiFi</label>
+    <input class="filled" type="text" value="tuya-th06-bridge (tuya-th06-bridge)" readonly>
+  </div>
+  <div class="row">
+    <div class="form-group">
+      <label>Intervali i polimit (s)</label>
+      <input class="filled" type="text" value="60" readonly>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px;padding-bottom:10px">
+      <span class="status active"><span class="dot green"></span> Ura aktive</span>
+    </div>
+  </div>
+  <div style="font-size:10pt;color:#666;margin-top:10px;border-top:1px solid #eee;padding-top:12px">
+    <strong>Si funksionon:</strong> TuyaBridge pollon API-në e Tuya çdo 60 sekonda, konverton përgjigjen në formatin e brendshëm dhe i ruan të dhënat në të njëjtën strukturë si ESP32.
+  </div>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,1402 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>IoT Platform - Full Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+        * { margin:0; padding:0; box-sizing:border-box; }
+        ::-webkit-scrollbar { width:6px; height:6px; }
+        ::-webkit-scrollbar-track { background:transparent; }
+        ::-webkit-scrollbar-thumb { background:var(--thumb); border-radius:3px; }
+        ::-webkit-scrollbar-thumb:hover { background:var(--thumb-hover); }
+
+        :root {
+            --bg: #f4f4f9;
+            --bg-card: rgba(255,255,255,0.85);
+            --bg-card-hover: rgba(255,255,255,0.95);
+            --text: #1a1a2e;
+            --text-secondary: #4a4a6a;
+            --text-muted: #7a7a9a;
+            --border: rgba(0,0,0,0.08);
+            --border-hover: rgba(99,102,241,0.3);
+            --shadow: 0 8px 32px rgba(0,0,0,0.06);
+            --shadow-hover: 0 12px 48px rgba(0,0,0,0.1);
+            --chart-bg: rgba(255,255,255,0.5);
+            --chart-border: rgba(0,0,0,0.06);
+            --input-bg: rgba(255,255,255,0.7);
+            --input-border: rgba(0,0,0,0.12);
+            --input-focus: rgba(99,102,241,0.3);
+            --select-option-bg: #fff;
+            --select-option-text: #1a1a2e;
+            --toolbar-bg: rgba(0,0,0,0.02);
+            --toolbar-border: rgba(0,0,0,0.04);
+            --empty-bg: rgba(0,0,0,0.02);
+            --empty-border: rgba(0,0,0,0.1);
+            --hover-bg: rgba(99,102,241,0.06);
+            --hover-border: rgba(99,102,241,0.25);
+            --scroll-thumb: rgba(0,0,0,0.12);
+            --scroll-thumb-hover: rgba(0,0,0,0.2);
+            --divider: linear-gradient(90deg,transparent,rgba(0,0,0,0.08),transparent);
+            --online-bg: rgba(52,211,153,0.12);
+            --online-text: #059669;
+            --online-border: rgba(52,211,153,0.25);
+            --offline-bg: rgba(156,163,175,0.1);
+            --offline-text: #6b7280;
+            --offline-border: rgba(156,163,175,0.15);
+            --badge-wifi-bg: rgba(59,130,246,0.1);
+            --badge-wifi-text: #2563eb;
+            --badge-wifi-border: rgba(59,130,246,0.2);
+            --badge-brand-bg: rgba(139,92,246,0.1);
+            --badge-brand-text: #7c3aed;
+            --badge-brand-border: rgba(139,92,246,0.2);
+            --stat-bg: linear-gradient(135deg,rgba(99,102,241,0.12),rgba(139,92,246,0.08));
+            --stat-border: rgba(0,0,0,0.06);
+            --prediction-bg: linear-gradient(135deg,rgba(99,102,241,0.08),rgba(139,92,246,0.05));
+            --prediction-border: rgba(99,102,241,0.12);
+            --prediction-stat-bg: rgba(0,0,0,0.02);
+            --notification-bg: rgba(30,30,50,0.92);
+            --notification-border: rgba(255,255,255,0.1);
+            --h1-gradient: linear-gradient(135deg,#4a4a6a,#6366f1,#818cf8);
+            --accent: #6366f1;
+        }
+        .dark-mode {
+            --bg: #0a0a14;
+            --bg-card: rgba(255,255,255,0.07);
+            --bg-card-hover: rgba(255,255,255,0.1);
+            --text: #f0f0f8;
+            --text-secondary: #c0c0d0;
+            --text-muted: #7a7a9a;
+            --border: rgba(255,255,255,0.1);
+            --border-hover: rgba(255,255,255,0.18);
+            --shadow: 0 8px 32px rgba(0,0,0,0.4);
+            --shadow-hover: 0 12px 48px rgba(0,0,0,0.5);
+            --chart-bg: rgba(0,0,0,0.3);
+            --chart-border: rgba(255,255,255,0.06);
+            --input-bg: rgba(255,255,255,0.06);
+            --input-border: rgba(255,255,255,0.12);
+            --input-focus: rgba(99,102,241,0.3);
+            --select-option-bg: #1a1a2e;
+            --select-option-text: #e8e8f0;
+            --toolbar-bg: rgba(255,255,255,0.03);
+            --toolbar-border: rgba(255,255,255,0.04);
+            --empty-bg: rgba(255,255,255,0.03);
+            --empty-border: rgba(255,255,255,0.12);
+            --hover-bg: rgba(129,140,248,0.08);
+            --hover-border: rgba(129,140,248,0.3);
+            --scroll-thumb: rgba(255,255,255,0.15);
+            --scroll-thumb-hover: rgba(255,255,255,0.25);
+            --divider: linear-gradient(90deg,transparent,rgba(255,255,255,0.1),transparent);
+            --online-bg: rgba(52,211,153,0.15);
+            --online-text: #34d399;
+            --online-border: rgba(52,211,153,0.25);
+            --offline-bg: rgba(156,163,175,0.12);
+            --offline-text: #9ca3af;
+            --offline-border: rgba(156,163,175,0.15);
+            --badge-wifi-bg: rgba(59,130,246,0.15);
+            --badge-wifi-text: #60a5fa;
+            --badge-wifi-border: rgba(59,130,246,0.2);
+            --badge-brand-bg: rgba(167,139,250,0.15);
+            --badge-brand-text: #c4b5fd;
+            --badge-brand-border: rgba(167,139,250,0.2);
+            --stat-bg: linear-gradient(135deg,rgba(129,140,248,0.18),rgba(167,139,250,0.12));
+            --stat-border: rgba(255,255,255,0.08);
+            --prediction-bg: linear-gradient(135deg,rgba(129,140,248,0.15),rgba(167,139,250,0.1));
+            --prediction-border: rgba(129,140,248,0.15);
+            --prediction-stat-bg: rgba(255,255,255,0.05);
+            --notification-bg: rgba(20,20,30,0.9);
+            --notification-border: rgba(255,255,255,0.1);
+            --h1-gradient: linear-gradient(135deg,#e8e8f0,#a5b4fc,#818cf8);
+            --accent: #818cf8;
+        }
+
+        @keyframes bgShift { 0%{background-position:0% 50%} 50%{background-position:100% 50%} 100%{background-position:0% 50%} }
+        @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+        @keyframes shimmer { 0%{background-position:-200% 0} 100%{background-position:200% 0} }
+        @keyframes countUp { from{opacity:0;transform:scale(0.5)} to{opacity:1;transform:scale(1)} }
+        @keyframes slideIn { from{transform:translateX(120%);opacity:0} to{transform:translateX(0);opacity:1} }
+        @keyframes spin { to{transform:rotate(360deg)} }
+        @keyframes dotPulse { 0%,100%{transform:scale(1);opacity:1} 50%{transform:scale(1.5);opacity:0.5} }
+        @keyframes borderGlow { 0%,100%{border-color:var(--online-border)} 50%{border-color:var(--online-text)} }
+
+        body { font-family:'Inter','Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); min-height:100vh; padding:24px; color:var(--text); background-image:radial-gradient(ellipse at 20% 50%,rgba(99,102,241,0.06) 0%,transparent 55%),radial-gradient(ellipse at 80% 20%,rgba(139,92,246,0.04) 0%,transparent 55%),radial-gradient(ellipse at 50% 80%,rgba(52,211,153,0.03) 0%,transparent 55%); background-attachment:fixed; transition:background .3s,color .3s; }
+        .container { max-width:1500px; margin:0 auto; animation:fadeUp .6s ease-out; }
+
+        .card { background:var(--bg-card); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px); border:1px solid var(--border); color:var(--text); border-radius:16px; padding:24px; margin-bottom:20px; box-shadow:var(--shadow); transition:all .3s cubic-bezier(.4,0,.2,1); animation:fadeUp .5s ease-out both; }
+        .card:hover { border-color:var(--border-hover); box-shadow:var(--shadow-hover); }
+        .card h2 { margin-bottom:16px; padding-bottom:12px; font-weight:700; font-size:18px; letter-spacing:-0.3px; border-bottom:2px solid; border-image:linear-gradient(90deg,#818cf8,#a78bfa) 1; color:var(--text); }
+
+        .stats-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-bottom:24px; }
+        .stat-card { background:var(--stat-bg); border:1px solid var(--stat-border); color:var(--text); padding:20px; border-radius:14px; text-align:center; transition:all .3s cubic-bezier(.4,0,.2,1); animation:fadeUp .5s ease-out both; position:relative; overflow:hidden; }
+        .stat-card:nth-child(1) { animation-delay:.15s; }
+        .stat-card:nth-child(2) { animation-delay:.2s; }
+        .stat-card:nth-child(3) { animation-delay:.25s; }
+        .stat-card::before { content:''; position:absolute; top:0; left:-100%; width:100%; height:100%; background:linear-gradient(90deg,transparent,rgba(255,255,255,0.06),transparent); animation:shimmer 3s ease-in-out infinite; }
+        .stat-card:hover { transform:translateY(-3px); box-shadow:0 16px 48px rgba(99,102,241,0.1); border-color:rgba(99,102,241,0.2); }
+        .stat-value { font-size:32px; font-weight:800; letter-spacing:-1px; background:linear-gradient(135deg,#818cf8,#c084fc); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:countUp .4s cubic-bezier(.4,0,.2,1) both; }
+        .stat-value[data-counted="true"] { animation:none; }
+        .stat-card div:last-child { font-size:13px; color:var(--text-muted); margin-top:4px; font-weight:500; text-transform:uppercase; letter-spacing:0.5px; }
+
+        .btn { padding:8px 18px; border:none; border-radius:10px; cursor:pointer; transition:all .2s cubic-bezier(.4,0,.2,1); margin:4px; font-weight:600; font-size:13px; font-family:inherit; letter-spacing:-0.2px; display:inline-flex; align-items:center; gap:6px; position:relative; overflow:hidden; }
+        .btn::after { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,0.1),transparent); opacity:0; transition:opacity .25s; }
+        .btn:hover { transform:translateY(-2px); box-shadow:0 8px 24px rgba(0,0,0,0.15); }
+        .btn:hover::after { opacity:1; }
+        .btn:active { transform:translateY(0) scale(0.98); }
+        .btn-primary { background:linear-gradient(135deg,#818cf8,#a78bfa); color:white; }
+        .btn-success { background:linear-gradient(135deg,#34d399,#10b981); color:white; }
+        .btn-warning { background:linear-gradient(135deg,#fbbf24,#f59e0b); color:#1a1a2e; }
+        .btn-danger { background:linear-gradient(135deg,#f87171,#ef4444); color:white; }
+        .btn-outline { background:transparent; color:var(--text-secondary); border:1px solid var(--border); }
+        .btn-outline:hover { background:var(--hover-bg); border-color:var(--hover-border); }
+
+
+
+        .device-list { max-height:260px; overflow-y:auto; display:flex; flex-direction:column; gap:4px; margin-bottom:12px; }
+        .device-item { background:var(--empty-bg); border:1px solid var(--border); padding:8px 12px; border-radius:8px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; transition:all .2s cubic-bezier(.4,0,.2,1); animation:fadeUp .3s ease-out both; font-size:13px; }
+        .device-item:nth-child(1) { animation-delay:.03s; }
+        .device-item:nth-child(2) { animation-delay:.05s; }
+        .device-item:nth-child(3) { animation-delay:.07s; }
+        .device-item:nth-child(4) { animation-delay:.09s; }
+        .device-item:nth-child(5) { animation-delay:.11s; }
+        .device-item:nth-child(6) { animation-delay:.13s; }
+        .device-item:nth-child(7) { animation-delay:.15s; }
+        .device-item:nth-child(8) { animation-delay:.17s; }
+        .device-item:hover { background:var(--hover-bg); border-color:var(--hover-border); transform:translateX(3px); }
+        .device-item strong { font-weight:600; font-size:13px; color:var(--text); }
+        .device-item .dev-info { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+        .device-item .dev-info small { color:var(--text-muted); font-size:11px; }
+        .device-item .dev-remove { opacity:0; transition:opacity .2s; }
+        .device-item .dev-action { opacity:0; transition:opacity .2s; cursor:pointer; color:var(--text-muted); font-size:12px; padding:2px 4px; }
+        .device-item:hover .dev-remove { opacity:1; }
+        .device-item:hover .dev-action { opacity:1; }
+
+        .status-online { background:var(--online-bg); color:var(--online-text); padding:2px 10px 2px 20px; border-radius:20px; font-size:10px; font-weight:700; letter-spacing:0.3px; border:1px solid var(--online-border); position:relative; }
+        .status-online::before { content:''; position:absolute; left:7px; top:50%; transform:translateY(-50%); width:6px; height:6px; background:var(--online-text); border-radius:50%; animation:dotPulse 2s ease-in-out infinite; }
+        .status-offline { background:var(--offline-bg); color:var(--offline-text); padding:2px 10px; border-radius:20px; font-size:10px; font-weight:600; letter-spacing:0.3px; border:1px solid var(--offline-border); }
+        .badge-wifi { background:var(--badge-wifi-bg); color:var(--badge-wifi-text); font-size:9px; padding:1px 6px; border-radius:8px; margin-left:4px; font-weight:600; letter-spacing:0.2px; border:1px solid var(--badge-wifi-border); }
+        .badge-brand { background:var(--badge-brand-bg); color:var(--badge-brand-text); font-size:8px; padding:1px 6px; border-radius:8px; margin-left:4px; font-weight:600; letter-spacing:0.2px; border:1px solid var(--badge-brand-border); text-transform:uppercase; }
+
+        .chart-container, .histogram-container { height:70vh; max-height:70vh; margin-top:0; background:var(--chart-bg); border-radius:12px; padding:12px; border:1px solid var(--chart-border); animation:fadeUp .5s ease-out both; }
+        .chart-container canvas, .histogram-container canvas { width:100% !important; height:100% !important; }
+        .chart-row { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+        .chart-pane { min-width:0; display:flex; flex-direction:column; }
+        .chart-pane .chart-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; }
+        .chart-pane .chart-header h3 { margin:0; font-size:15px; }
+        @media (max-width:700px){ .chart-row { grid-template-columns:1fr; } }
+
+        hr.section-divider { border:none; height:2px; background:var(--divider); margin:32px 0; }
+
+        .alert-box { padding:14px 16px; margin:12px 0; border-radius:12px; border-left:4px solid; font-size:14px; line-height:1.5; animation:fadeUp .3s ease-out; }
+        .alert-success { background:rgba(52,211,153,0.08); border-left-color:#34d399; color:#059669; }
+        .dark-mode .alert-success { color:#a7f3d0; }
+        .alert-warning { background:rgba(251,191,36,0.08); border-left-color:#fbbf24; color:#b45309; }
+        .dark-mode .alert-warning { color:#fde68a; }
+        .alert-danger { background:rgba(248,113,113,0.08); border-left-color:#f87171; color:#b91c1c; }
+        .dark-mode .alert-danger { color:#fca5a5; }
+
+        .prediction-box { background:var(--prediction-bg); border:1px solid var(--prediction-border); color:var(--text); padding:18px; border-radius:14px; margin-top:14px; animation:fadeUp .4s ease-out; }
+        .prediction-stats { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin-bottom:12px; }
+        .prediction-stat { text-align:center; padding:14px; background:var(--prediction-stat-bg); border-radius:10px; border:1px solid var(--border); transition:all .2s; }
+        .prediction-stat:hover { background:var(--hover-bg); border-color:var(--hover-border); transform:translateY(-1px); }
+        .prediction-stat .prediction-stat-value { font-size:20px; font-weight:700; }
+
+        select, input { padding:9px 12px; border-radius:10px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--text); font-size:13px; font-family:inherit; margin:4px; outline:none; transition:all .25s cubic-bezier(.4,0,.2,1); width:100%; }
+        select:focus, input:focus { border-color:var(--accent); box-shadow:0 0 0 3px var(--input-focus); background:var(--input-bg); }
+        select:hover, input:hover { border-color:var(--text-muted); }
+        select option { background:var(--select-option-bg); color:var(--select-option-text); }
+
+        .wifi-form { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:10px; align-items:end; margin-top:12px; }
+        .wifi-form label { display:block; font-size:11px; color:var(--text-muted); margin-bottom:5px; font-weight:600; text-transform:uppercase; letter-spacing:0.5px; }
+        .wifi-setup { background:var(--hover-bg); border:1px solid var(--badge-brand-border); border-radius:12px; padding:18px; margin-top:16px; display:none; animation:fadeUp .4s ease-out; }
+        .wifi-setup strong { display:block; margin-bottom:12px; font-weight:600; font-size:14px; color:var(--badge-brand-text); }
+        .wifi-setup pre { background:var(--chart-bg); color:var(--text); padding:14px; border-radius:10px; overflow-x:auto; font-size:12px; margin:10px 0; border:1px solid var(--border); }
+        .wifi-setup .cred { font-family:'SF Mono','Consolas','Monaco',monospace; word-break:break-all; background:var(--chart-bg); padding:8px 12px; border-radius:8px; border:1px solid var(--border); margin:5px 0; color:var(--accent); font-size:13px; }
+        .wifi-setup small { color:var(--text-muted); font-size:11px; text-transform:uppercase; letter-spacing:0.5px; }
+        details { color:var(--text-muted); }
+        details summary { cursor:pointer; color:var(--text-muted); font-size:12px; }
+        details summary:hover { color:var(--text-secondary); }
+
+        .toolbar { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:var(--toolbar-bg); border-radius:10px; padding:10px 12px; border:1px solid var(--toolbar-border); margin-bottom:10px; }
+        .toolbar select { min-width:220px; }
+        .panel-row { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:8px; }
+        .muted { color:var(--text-muted); font-size:13px; }
+        .empty-state { padding:20px; border:1px dashed var(--empty-border); border-radius:12px; color:var(--text-muted); margin-top:12px; background:var(--empty-bg); text-align:center; font-size:14px; animation:fadeUp .4s ease-out; }
+
+        .notification { position:fixed; right:24px; bottom:24px; z-index:1000; color:#fff; border-radius:12px; padding:14px 20px; box-shadow:0 12px 40px rgba(0,0,0,0.4); font-size:14px; font-weight:500; backdrop-filter:blur(12px); background:var(--notification-bg); border:1px solid var(--notification-border); animation:slideIn .35s cubic-bezier(.4,0,.2,1); }
+
+        h1 { font-size:26px; font-weight:800; letter-spacing:-0.5px; background:var(--h1-gradient); background-size:200% 200%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:bgShift 4s ease-in-out infinite; margin-bottom:4px; }
+        .card > p { color:var(--text-secondary); font-size:14px; }
+        h3 { font-size:14px; font-weight:600; color:var(--text-secondary); margin-bottom:8px; text-transform:uppercase; letter-spacing:0.5px; }
+
+        #mlStatus { display:inline-block; padding:4px 12px; border-radius:8px; font-size:13px; font-weight:500; background:var(--empty-bg); border:1px solid var(--border); vertical-align:middle; transition:all .3s; color:var(--text); }
+        #autopilotStatus { display:inline-block; padding:4px 12px; border-radius:8px; font-size:13px; font-weight:500; background:var(--empty-bg); border:1px solid var(--border); vertical-align:middle; transition:all .3s; color:var(--text); }
+        #autopilotStatus.active { background:var(--online-bg); border-color:var(--online-border); color:var(--online-text); animation:borderGlow 2s ease-in-out infinite; }
+
+        .loading-dots::after { content:''; animation:dotAnim 1.5s steps(4) infinite; }
+        @keyframes dotAnim { 0%{content:''} 25%{content:'.'} 50%{content:'..'} 75%{content:'...'} 100%{content:''} }
+
+        .theme-toggle { position:fixed; top:24px; right:24px; z-index:999; width:40px; height:40px; border-radius:50%; border:1px solid var(--border); background:var(--bg-card); color:var(--text); cursor:pointer; font-size:18px; display:flex; align-items:center; justify-content:center; backdrop-filter:blur(10px); box-shadow:var(--shadow); transition:all .3s; }
+        .theme-toggle:hover { transform:scale(1.1); box-shadow:var(--shadow-hover); }
+
+        .tab-nav { display:flex; gap:4px; margin-bottom:20px; flex-wrap:wrap; }
+        .tab-btn { padding:10px 22px; border-radius:12px; border:1px solid var(--border); background:var(--bg-card); color:var(--text-secondary); cursor:pointer; font-size:14px; font-weight:600; font-family:inherit; transition:all .25s; backdrop-filter:blur(10px); box-shadow:var(--shadow); }
+        .tab-btn:hover { border-color:var(--accent); color:var(--text); }
+        .tab-btn.active { background:var(--accent); color:white; border-color:var(--accent); box-shadow:0 4px 16px rgba(99,102,241,0.3); }
+        .tab-content { display:none; animation:fadeUp .4s ease-out; }
+        .tab-content.active { display:block; }
+        #deviceStatusBar { display:flex; gap:12px; align-items:center; padding:8px 0; margin-bottom:8px; font-size:13px; }
+        .status-pill { display:inline-flex; align-items:center; gap:4px; padding:4px 10px; border-radius:20px; font-weight:600; font-size:12px; }
+        .status-pill.online { background:var(--online-bg); color:var(--online-text); }
+        .status-pill.offline { background:var(--offline-bg); color:var(--offline-text); }
+        .date-range { display:inline-flex; align-items:center; gap:4px; }
+        .date-range input { padding:4px 6px; font-size:11px; border-radius:6px; border:1px solid var(--input-border); background:var(--input-bg); color:var(--text); max-width:160px; }
+        .btn-sm { padding:4px 10px; font-size:11px; }
+        .btn-active { background:var(--online-bg) !important; color:var(--online-text) !important; border-color:var(--online-border) !important; }
+        .badge-group { display:inline-block; font-size:10px; padding:1px 6px; border-radius:4px; background:var(--badge-wifi-bg); color:var(--badge-wifi-text); border:1px solid var(--badge-wifi-border); margin-left:4px; }
+
+        @media (max-width:768px){ .stats-grid{grid-template-columns:repeat(2,1fr);} .wifi-form{grid-template-columns:1fr 1fr;} .tab-btn{padding:8px 14px;font-size:13px;} }
+        @media (max-width:480px){ .stats-grid{grid-template-columns:1fr;} .wifi-form{grid-template-columns:1fr;} body{padding:12px;} .theme-toggle{top:12px;right:12px;} }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+</head>
+<body>
+<div class="container">
+    <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" title="Toggle theme">☀️</button>
+    <div class="card"><h1>🤖 Platforma IoT & AI <span id="sslBadge" style="display:none;font-size:12px;background:var(--online-bg);color:var(--online-text);padding:2px 8px;border-radius:4px;vertical-align:middle">🔒 HTTPS</span></h1><p>Të dhëna në kohë reale | Analiza AI | Parashikime | ML</p></div>
+    <div class="tab-nav" id="tabNav">
+        <button class="tab-btn active" data-tab="dashboard" onclick="switchTab('dashboard')">📊 Përmbledhje</button>
+        <button class="tab-btn" data-tab="devices" onclick="switchTab('devices')">📱 Pajisjet</button>
+    </div>
+
+    <!-- ═══ DASHBOARD TAB ═══ -->
+    <div class="tab-content active" id="tab-dashboard">
+        <div id="deviceStatusBar"></div>
+        <div class="stats-grid" id="stats"></div>
+        <div class="card">
+            <h2>📊 Seritë kohore</h2>
+            <div class="toolbar"><select id="deviceSelect" onchange="loadDeviceData()"><option value="">Zgjidh pajisjen</option></select> <button class="btn btn-success" onclick="simulateData()">Dërgo të dhëna</button> <button class="btn btn-primary" onclick="runAnalysis()">Analiza AI</button> <button class="btn btn-warning" onclick="runPrediction()">Parashiko 24h</button> <button class="btn btn-outline" onclick="clearPredictions()">✕ Pastro parashikimet</button> <span class="time-range-btns"> <button class="btn btn-sm" data-range="300" onclick="setTimeRange(300)">5m</button> <button class="btn btn-sm" data-range="900" onclick="setTimeRange(900)">15m</button> <button class="btn btn-sm btn-active" data-range="3600" onclick="setTimeRange(3600)">1h</button> <button class="btn btn-sm" data-range="21600" onclick="setTimeRange(21600)">6h</button> <button class="btn btn-sm" data-range="86400" onclick="setTimeRange(86400)">24h</button> </span> <span class="date-range"><label style="font-size:11px;color:var(--text-muted)">Nga:</label><input type="datetime-local" id="dateFrom" onchange="loadDeviceData()"> <label style="font-size:11px;color:var(--text-muted)">Deri:</label><input type="datetime-local" id="dateTo" onchange="loadDeviceData()"> <button class="btn btn-sm btn-outline" onclick="clearDateRange()" title="Pastro filtrin">✕</button></span></div>
+            <div class="panel-row muted"><span id="selectedDeviceHint">Asnjë pajisje e zgjedhur</span><span id="renameDeviceBtn" style="cursor:pointer;font-size:14px;padding:0 8px;display:none" onclick="renameCurrentDevice()" title="Ndrysho emrin">✏️</span><span id="selectedDeviceStatus"></span><span id="lastUpdatedHint">• Përditësimi i fundit: --</span></div>
+            <div class="chart-row"><div class="chart-pane"><div class="chart-header"><h3>🌡️ Temperatura</h3></div><div class="chart-container"><canvas id="tempChart"></canvas></div></div><div class="chart-pane"><div class="chart-header"><h3>💧 Lagështia</h3></div><div class="chart-container"><canvas id="humidityChart"></canvas></div></div></div>
+            <div id="contactPanel" style="display:none">
+                <div style="display:flex;align-items:center;gap:16px;padding:20px;border-radius:14px;border:1px solid var(--border);background:var(--bg-card)">
+                    <div id="contactStatusIcon" style="width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:24px;background:var(--online-bg)">🚪</div>
+                    <div><strong id="contactStatusLabel" style="font-size:20px">--</strong><div id="contactLastChanged" style="font-size:13px;color:var(--text-muted)">--</div></div>
+                </div>
+                <div style="margin-top:12px"><h3 style="margin-bottom:6px">📋 Regjistri i ngjarjeve</h3><div id="contactEventLog" style="max-height:300px;overflow-y:auto;font-size:13px"></div></div>
+            </div>
+            <div id="chartEmptyState" class="empty-state">Zgjidh një pajisje për të parë grafikët, analizën AI dhe parashikimet.</div>
+            <div id="analysisResult"></div>
+            <div id="predictionResult"></div>
+        </div>
+        <div class="card">
+            <h2>📊 Histogrami dhe Autokorrelacioni</h2>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+                <div><h3 style="margin-bottom:6px">Shpërndarja</h3><div class="chart-container"><canvas id="histogramChart"></canvas></div></div>
+                <div><h3 style="margin-bottom:6px">Korrelacioni i vonesës</h3><div class="chart-container"><canvas id="autoCorrChart"></canvas></div></div>
+            </div>
+        </div>
+        <div class="card">
+            <h2>🎛️ Pragu i alarmit</h2>
+            <div><label>🌡️ Ndryshimi max (°C):</label><input type="number" id="deltaThreshold" min="0.1" max="20" step="0.1" value="2.0" style="width:100%;padding:8px;margin:4px 0 8px;border:1px solid var(--border);border-radius:6px;background:var(--bg);color:var(--text);font-size:16px"></div>
+            <div style="display:flex;gap:6px;flex-wrap:wrap"><button class="btn btn-warning" onclick="setDelta(0.5)">±0.5°C</button><button class="btn btn-primary" onclick="setDelta(2.0)">±2.0°C</button><button class="btn btn-outline" onclick="setDelta(5.0)">±5.0°C</button></div>
+
+        </div>
+        <div class="card">
+            <h2>🤖 Autopilot</h2>
+            <div><span id="autopilotStatus">⏸️ Joaktiv</span> <button class="btn btn-success" onclick="startAutopilot()">Fillimi</button> <button class="btn btn-danger" onclick="stopAutopilot()">Ndalo</button> <button class="btn btn-primary" onclick="showAlerts()">Shiko alarmet</button></div>
+            <div id="alertsContainer"></div>
+        </div>
+        <div class="card">
+            <h2>🧠 Mësimi i Makinerisë (Random Forest)</h2>
+            <div><button class="btn btn-primary" onclick="trainML()">Trajno modelin</button> <button class="btn btn-warning" onclick="predictML()">Parashiko ML 24h</button> <span id="mlStatus">⚪ I patrajnuar</span></div>
+            <div id="mlResult"></div>
+        </div>
+        <div class="card">
+            <h2>📬 Alarmet Telegram</h2>
+            <div><label>Token i botit:</label> <input type="text" id="tgToken" style="width:100%;margin:4px 0 8px" placeholder="123456:ABC..."></div>
+            <div><label>ID e chat-it:</label> <input type="text" id="tgChatId" style="width:100%;margin:4px 0 8px" placeholder="-123456789"></div>
+            <div><label><input type="checkbox" id="tgEnabled"> Aktiv</label></div>
+            <div style="margin-top:8px"><button class="btn btn-primary" onclick="saveTelegram()">Ruaj</button> <button class="btn btn-outline" onclick="testTelegram()">Testo</button> <span id="tgStatus"></span></div>
+            <div id="tgWarning" style="margin-top:6px;color:#e74c3c;font-size:13px;display:none">⚠️ Telegram nuk është konfiguruar — alarmet nuk do të dërgohen</div>
+        </div>
+        <div class="card">
+            <h2>🔌 Ura Tuya</h2>
+            <div><label>ID e aksesit:</label> <input type="text" id="tuyaAccessId" style="width:100%;margin:4px 0 8px"></div>
+            <div><label>Fshehtësia e aksesit:</label> <input type="password" id="tuyaAccessSecret" style="width:100%;margin:4px 0 8px"></div>
+            <div><label>ID e pajisjes Tuya:</label> <input type="text" id="tuyaDeviceId" style="width:100%;margin:4px 0 8px" placeholder="Nga dashboard-i Tuya Cloud"></div>
+            <div><label>Lidh me pajisjen WiFi:</label> <select id="tuyaDeviceSelect" style="width:100%;margin:4px 0 8px"><option value="">-- Zgjidh një pajisje WiFi të regjistruar --</option></select></div>
+            <div><label>Intervali i polimit (s):</label> <input type="number" id="tuyaInterval" value="60" style="width:100px;margin:4px 0 8px"></div>
+            <div style="margin-top:8px"><button class="btn btn-primary" onclick="saveTuya()">Ruaj</button> <span id="tuyaStatus"></span> <span id="tuyaBridgeStatus" style="font-size:12px;margin-left:8px"></span></div>
+        </div>
+    </div>
+
+    <!-- ═══ DEVICES TAB ═══ -->
+    <div class="tab-content" id="tab-devices">
+        <div class="card">
+            <h2>📱 Pajisjet</h2>
+            <div id="groupFilter" style="margin-bottom:10px;display:flex;gap:6px;flex-wrap:wrap;align-items:center">
+                <span style="font-size:12px;color:var(--text-muted)">Grupi:</span>
+                <button class="btn btn-sm btn-active" data-group="" onclick="filterGroup(this,'')">Të gjitha</button>
+            </div>
+            <div id="devicesList">Duke u ngarkuar...</div>
+            <div style="margin-bottom:12px;display:flex;gap:8px;flex-wrap:wrap">
+                <button class="btn btn-success" onclick="quickAddSensor('temperature')" style="padding:10px 24px">🌡️ Sensor temperature</button>
+                <button class="btn btn-outline" onclick="quickAddSensor('contact')" style="padding:10px 24px;display:none">🚪 Sensor dere</button>
+                <button class="btn btn-outline" onclick="addSimulated()">🧪 Shto pajisje testimi</button>
+                <button class="btn btn-primary" onclick="loadDevices()">🔄 Rifresko</button>
+            </div>
+            <div id="wifiSetupPanel" style="display:none;margin-top:16px;border-radius:14px;padding:20px;animation:fadeUp .4s ease-out" class="wifi-setup">
+                <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px">
+                    <div style="width:40px;height:40px;border-radius:50%;background:var(--online-bg);display:flex;align-items:center;justify-content:center;font-size:20px">✅</div>
+                    <div><strong style="font-size:16px" id="credBrandTitle">Sensor i regjistruar!</strong><div style="font-size:13px;color:var(--text-muted)" id="credBrandSub">Vendosni këto kredenciale në konfigurimin e sensorit.</div></div>
+                </div>
+                <div style="display:flex;flex-direction:column;gap:8px;margin-bottom:16px">
+                    <div>
+                        <small style="color:var(--text-muted);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:3px">URL e dërgimit</small>
+                        <div style="display:flex;gap:6px;align-items:center">
+                            <input type="text" id="credIngestUrl" readonly style="flex:1;font-size:12px;padding:8px 10px;font-family:monospace">
+                            <button class="btn btn-outline" onclick="copyText('credIngestUrl')" style="font-size:11px;padding:6px 10px;white-space:nowrap">📋 Copy</button>
+                        </div>
+                    </div>
+                    <div style="display:flex;gap:10px;flex-wrap:wrap">
+                        <div style="flex:1;min-width:140px">
+                            <small style="color:var(--text-muted);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:3px">ID e pajisjes</small>
+                            <div style="display:flex;gap:4px;align-items:center">
+                                <input type="text" id="credDeviceId" readonly style="flex:1;font-size:12px;padding:8px 10px;font-family:monospace">
+                                <button class="btn btn-outline" onclick="copyText('credDeviceId')" style="font-size:11px;padding:6px 8px">📋</button>
+                            </div>
+                        </div>
+                        <div style="flex:1;min-width:140px">
+                            <small style="color:var(--text-muted);font-size:10px;text-transform:uppercase;letter-spacing:0.5px;display:block;margin-bottom:3px">Çelësi API (sekret)</small>
+                            <div style="display:flex;gap:4px;align-items:center">
+                                <input type="text" id="credApiKey" readonly style="flex:1;font-size:12px;padding:8px 10px;font-family:monospace">
+                                <button class="btn btn-outline" onclick="copyText('credApiKey')" style="font-size:11px;padding:6px 8px">📋</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div style="display:flex;gap:8px;flex-wrap:wrap">
+                    <button class="btn btn-success" onclick="copyAllCreds()" style="padding:10px 20px">📋 Kopjo të gjitha kredencialet</button>
+                    <button class="btn btn-warning" onclick="testWifiIngest()">📡 Testo sensorin</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+<script>
+    const API = '';
+    window.onerror = function(msg, src, line, col, err) {
+        var d = document.createElement('div');
+        d.style.cssText = 'position:fixed;bottom:0;left:0;right:0;background:#c00;color:#fff;padding:12px;font-size:13px;z-index:9999;font-family:monospace';
+        d.textContent = 'JS Error: ' + msg + ' at ' + src + ':' + line;
+        document.body.appendChild(d);
+    };
+
+    function toggleTheme() {
+        const html = document.documentElement;
+        html.classList.toggle('dark-mode');
+        const isDark = html.classList.contains('dark-mode');
+        localStorage.setItem('theme', isDark ? 'dark' : 'light');
+        document.getElementById('themeToggle').textContent = isDark ? '🌙' : '☀️';
+        applyChartTheme();
+    }
+
+    function applyChartTheme() {
+        const cs = getComputedStyle(document.documentElement);
+        const gridC = cs.getPropertyValue('--chart-border').trim() || 'rgba(0,0,0,0.06)';
+        const tickC = cs.getPropertyValue('--text-muted').trim() || '#7a7a9a';
+        [tempChart, humidityChart, histChart, autoCorrChart].forEach(c => {
+            if (!c) return;
+            ['x','y'].forEach(axis => {
+                if (c.options.scales[axis]) {
+                    if (c.options.scales[axis].ticks) c.options.scales[axis].ticks.color = tickC;
+                    if (c.options.scales[axis].grid) c.options.scales[axis].grid.color = gridC;
+                    if (c.options.scales[axis].title) c.options.scales[axis].title.color = tickC;
+                }
+            });
+            c.update('none');
+        });
+    }
+
+    // Apply saved theme on load
+    (function() {
+        const saved = localStorage.getItem('theme');
+        if (saved === 'dark' || (!saved && window.matchMedia('(prefers-color-scheme:dark)').matches)) {
+            document.documentElement.classList.add('dark-mode');
+            document.getElementById('themeToggle').textContent = '🌙';
+        } else {
+            document.getElementById('themeToggle').textContent = '☀️';
+        }
+    })();
+    let histChart = null, autoCorrChart = null, currentDeviceId = null, currentDelta = 2.0, anomalyColors = null,
+autoInterval = null, refreshInterval = null;
+    let currentTimeRange = 3600, lastWifiCreds = null;
+    let tempChart = null, humidityChart = null;
+    let currentLabels = [], currentValues = [], humidityLabels = [], humidityValues = [];
+    let lastDataId = 0, lastDataIdForDevice = '';
+    let predictionOverlay = null, mlPredictionOverlay = null, normalRangeOverlay = null;
+    let _pollCount = 0;
+    let _lastContactEventCount = 0;
+
+    function notify(message, type='info') {
+        const el = document.createElement('div');
+        el.className = 'notification';
+        const cs = getComputedStyle(document.documentElement);
+        if (type === 'success') el.style.background = cs.getPropertyValue('--online-text').trim() || '#059669';
+        else if (type === 'error') el.style.background = '#ef4444';
+        else el.style.background = cs.getPropertyValue('--accent').trim() || '#6366f1';
+        el.textContent = message;
+        document.body.appendChild(el);
+        setTimeout(() => el.remove(), 2600);
+    }
+
+    async function apiCall(endpoint, options={}) {
+        try {
+            const url = window.location.origin + endpoint;
+            console.log('Fetching:', url);
+            const res = await fetch(url, options);
+            if (!res.ok) { console.warn('API not OK:', res.status, endpoint); return null; }
+            const data = await res.json();
+            return data;
+        } catch(e){ console.error('API error:', endpoint, e); return null; }
+    }
+
+    function makeChartOptions(yLabel, yMin, yMax, stepSize) {
+        const yOpts = { title: { display: true, text: yLabel } };
+        if (yMin !== undefined) yOpts.min = yMin;
+        if (yMax !== undefined) yOpts.max = yMax;
+        if (stepSize !== undefined) { yOpts.ticks = { stepSize }; }
+        return {
+            responsive: true,
+            maintainAspectRatio: false,
+            animation: false,
+            interaction: { mode: undefined },
+            plugins: {
+                legend: { display: true, position: 'top', labels: { boxWidth: 12, padding: 10 }, onClick: null },
+                tooltip: { enabled: true, mode: 'index', intersect: false }
+            },
+            scales: {
+                y: yOpts,
+                x: { title: { display: true, text: 'Koha' }, ticks: { maxTicksLimit: 20, callback: function(v) { if (!v) return v; const d = new Date(v); if (!isNaN(d)) { const p=n=>String(n).padStart(2,'0'); return p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds()); } return v; } } }
+            }
+        };
+    }
+
+    function resetVisuals(message='Zgjidh një pajisje për të parë grafikët, analizën AI dhe parashikimet.') {
+        document.getElementById('analysisResult').innerHTML = '';
+        document.getElementById('predictionResult').innerHTML = '';
+        document.getElementById('mlResult').innerHTML = '';
+        normalRangeOverlay = null;
+        predictionOverlay = null;
+        mlPredictionOverlay = null;
+        document.getElementById('chartEmptyState').textContent = message;
+        document.getElementById('chartEmptyState').style.display = 'block';
+        currentLabels = []; currentValues = []; humidityLabels = []; humidityValues = [];
+        if (tempChart) { tempChart.data.labels = []; tempChart.data.datasets.length = 0; tempChart.update(); }
+        if (humidityChart) { humidityChart.data.labels = []; humidityChart.data.datasets.length = 0; humidityChart.update(); }
+        updateHistogram([0,0,0,0,0], 5);
+        if (autoCorrChart) { autoCorrChart.destroy(); autoCorrChart = null; }
+    }
+
+    function localTimeStr(d) { const p=n=>String(n).padStart(2,'0'); return p(d.getHours())+':'+p(d.getMinutes())+':'+p(d.getSeconds()); }
+
+    function renderChart(chartRef, canvasId, labels, values, color, label, extraDatasets, yLabel, yMin, yMax, stepSize) {
+        const n = values.length;
+        if (!chartRef) {
+            const ctx = document.getElementById(canvasId).getContext('2d');
+            try { chartRef = new Chart(ctx, { type: 'line', data: { labels: [], datasets: [] }, options: makeChartOptions(yLabel || 'Value', yMin, yMax, stepSize) }); } catch(e) { console.error('Chart init error:', e); return null; }
+        }
+        const hasPred = extraDatasets && extraDatasets.length > 0;
+        const extraLen = hasPred ? Math.max(...extraDatasets.map(d => d.values.length)) : 0;
+        const total = n + extraLen;
+        const allLabels = [...labels];
+        if (extraLen > 0 && labels.length > 1) {
+            const lastTs = new Date(labels[labels.length - 1]).getTime();
+            const prevTs = new Date(labels[labels.length - 2]).getTime();
+            const interval = lastTs - prevTs || 5000;
+            for (let i = 0; i < extraLen; i++) allLabels.push(localTimeStr(new Date(lastTs + interval * (i + 1))));
+        } else {
+            for (let i = 0; i < extraLen; i++) allLabels.push(n + i + 1);
+        }
+        function padEnd(arr) { return arr.concat(new Array(total - arr.length).fill(null)); }
+        function padStart(arr) { return new Array(total - arr.length).fill(null).concat(arr); }
+        chartRef.data.labels = allLabels;
+        chartRef.data.datasets.length = 0;
+        chartRef.data.datasets.push({ label, data: padEnd(values), borderColor: color, fill: false, pointRadius: 3, pointBackgroundColor: color, tension: 0.3 });
+        if (hasPred) {
+            for (const e of extraDatasets) {
+                const ds = {
+                    label: e.label,
+                    data: padStart(e.values),
+                    borderColor: e.color,
+                    borderDash: e.dash || [],
+                    fill: e.fill !== undefined ? e.fill : false,
+                    pointRadius: e.pointRadius !== undefined ? e.pointRadius : 2,
+                    tension: 0.3,
+                    backgroundColor: e.backgroundColor || 'transparent',
+                    borderWidth: e.borderWidth !== undefined ? e.borderWidth : 2,
+                    pointBackgroundColor: e.color,
+                };
+                if (e.hideLegend) ds.showInLegend = false;
+                chartRef.data.datasets.push(ds);
+            }
+        }
+        chartRef.update('none');
+        return chartRef;
+    }
+
+    function addPredictionBands(extras, overlay, predColor, bandColor) {
+        if (!overlay) return;
+        extras.push({ label: overlay.label, values: overlay.values, color: predColor, dash: overlay.dash || [6, 3] });
+        if (overlay.lower_bounds && overlay.upper_bounds) {
+            extras.push({ label: '', values: overlay.lower_bounds, color: 'transparent', borderWidth: 0, pointRadius: 0, hideLegend: true, fill: false });
+            extras.push({ label: '', values: overlay.upper_bounds, color: 'transparent', borderWidth: 0, pointRadius: 0, hideLegend: true, fill: '-1', backgroundColor: bandColor });
+        }
+    }
+
+    function updateChart() {
+        const tempExtras = [];
+        const humExtras = [];
+        addPredictionBands(tempExtras, predictionOverlay, '#ff9800', 'rgba(255,152,0,0.12)');
+        addPredictionBands(tempExtras, mlPredictionOverlay, '#4CAF50', 'rgba(76,175,80,0.12)');
+        tempChart = renderChart(tempChart, 'tempChart', currentLabels, currentValues, '#667eea', 'Temperatura °C', tempExtras, 'Temperatura (°C)', -15, 75, 1);
+        humidityChart = renderChart(humidityChart, 'humidityChart', humidityLabels, humidityValues, '#4CAF50', 'Lagështia %', humExtras.length ? humExtras : null, 'Lagështia (%)', 0, 100, 1);
+        // Re-apply anomaly colors if analysis was run (survives chart re-renders and polling)
+        if (anomalyColors && tempChart) {
+            const dataLen = tempChart.data.datasets[0].data.length;
+            const colors = [];
+            for (let i = 0; i < dataLen; i++) {
+                colors.push(anomalyColors.anomalySet.has(i) ? '#ff0000' : anomalyColors.baseColor);
+            }
+            tempChart.data.datasets[0].pointBackgroundColor = colors;
+            tempChart.update('none');
+        }
+    }
+
+    function updateHistogram(values, bins=10) {
+        if (!values || values.length===0) return;
+        const min = Math.min(...values), max = Math.max(...values);
+        const width = (max-min)/bins;
+        if (width === 0) return;
+        const counts = Array(bins).fill(0);
+        for(let v of values){
+            let idx = Math.floor((v-min)/width);
+            if(idx===bins) idx=bins-1;
+            if (idx >= 0 && idx < bins) counts[idx]++; else counts[0]++;
+        }
+        const labels = [];
+        for(let i=0;i<bins;i++) labels.push(`${(min+i*width).toFixed(1)}-${(min+(i+1)*width).toFixed(1)}`);
+        if(histChart) histChart.destroy();
+        const ctx = document.getElementById('histogramChart').getContext('2d');
+        try {
+            histChart = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets: [{ label: 'Frekuenca', data: counts, backgroundColor: '#667eea', borderRadius: 4 }] },
+                options: { responsive: true, maintainAspectRatio: false, animation: false, interaction: { mode: undefined }, plugins: { tooltip: { enabled: false }, legend: { display: false } }, scales: { y: { beginAtZero: true, title: { display: true, text: 'Numri' } }, x: { title: { display: true, text: 'Intervali i vlerave' } } } }
+            });
+        } catch(e) { console.error('Histogram error:', e); }
+    }
+
+    function updateAutocorrelation(values, maxLag=20) {
+        if (!values || values.length < 3) return;
+        const n = values.length;
+        const mean = values.reduce((a,b)=>a+b,0) / n;
+        const variance = values.reduce((s,v)=>s+(v-mean)**2, 0);
+        if (variance === 0) return;
+        const lags = Math.min(maxLag, Math.floor(n/2));
+        const acf = [];
+        for (let lag = 0; lag <= lags; lag++) {
+            let num = 0;
+            for (let i = lag; i < n; i++) num += (values[i] - mean) * (values[i-lag] - mean);
+            acf.push(num / variance);
+        }
+        const labels = acf.map((_,i)=>'Lag '+i);
+        if (autoCorrChart) autoCorrChart.destroy();
+        const ctx = document.getElementById('autoCorrChart').getContext('2d');
+        try {
+            autoCorrChart = new Chart(ctx, {
+                type: 'bar',
+                data: { labels, datasets: [{ label: 'Autocorrelation', data: acf, backgroundColor: acf.map(v => v >= 0 ? 'rgba(129,140,248,0.8)' : 'rgba(248,113,113,0.8)'), borderRadius: 3 }] },
+                options: { responsive: true, maintainAspectRatio: false, animation: false, interaction: { mode: undefined }, plugins: { tooltip: { enabled: false }, legend: { display: false } }, scales: { y: { beginAtZero: false, title: { display: true, text: 'Korrelacioni' } }, x: { title: { display: true, text: 'Vonesa' } } } }
+            });
+        } catch(e) { console.error('Autocorr error:', e); }
+    }
+
+    async function loadStats() {
+        const stats = await apiCall('/system/stats');
+        if (!stats) return;
+        const el = document.getElementById('stats');
+        if (el.children.length === 0) {
+            el.innerHTML = `
+                <div class="stat-card"><div class="stat-value" id="statTotal">${stats.devices.total}</div><div>Pajisjet</div></div>
+                <div class="stat-card"><div class="stat-value" id="statOnline">${stats.devices.online}</div><div>Online</div></div>
+                <div class="stat-card"><div class="stat-value" id="statPoints">${stats.data.recent_24h}</div><div>Pikat e të dhënave</div></div>`;
+        } else {
+            const update = (id, val) => { const e = document.getElementById(id); if (e) e.textContent = val; };
+            update('statTotal', stats.devices.total);
+            update('statOnline', stats.devices.online);
+            update('statPoints', stats.data.recent_24h);
+        }
+    }
+
+    function timeAgo(iso) {
+        if (!iso) return '';
+        const ms = Date.now() - new Date(iso).getTime();
+        if (ms < 0) return 'tani';
+        const s = Math.floor(ms / 1000);
+        if (s < 60) return s <= 5 ? 'tani' : s + 's më parë';
+        const m = Math.floor(s / 60);
+        if (m < 60) return m + 'min më parë';
+        const h = Math.floor(m / 60);
+        if (h < 24) return h + 'orë më parë';
+        return Math.floor(h / 24) + 'ditë më parë';
+    }
+
+    function liveStatus(iso) {
+        if (!iso) return '<span class="status-offline">offline</span>';
+        const ms = Date.now() - new Date(iso).getTime();
+        if (ms < 300000) return '<span class="status-online">drejtpërdrejt</span>'; // < 5 min
+        if (ms < 3600000) return '<span class="status-offline">' + Math.floor(ms / 60000) + 'm ago</span>';
+        return '<span class="status-offline">' + timeAgo(iso) + '</span>';
+    }
+
+    let currentGroupFilter = '';
+    let allDevices = [];
+
+    async function loadDevices() {
+        const sel = document.getElementById('deviceSelect');
+        const listDiv = document.getElementById('devicesList');
+        const devices = await apiCall('/devices');
+        if (!devices || !devices.length) {
+            listDiv.innerHTML = 'Ende pa pajisje.';
+            return;
+        }
+        allDevices = devices;
+        sel.innerHTML = '<option>Zgjidh pajisjen</option>';
+        listDiv.innerHTML = '';
+
+        // Build group filter
+        const groups = {};
+        for (const d of devices) {
+            const g = d.group || 'Ungrouped';
+            if (!groups[g]) groups[g] = 0;
+            groups[g]++;
+        }
+        const gf = document.getElementById('groupFilter');
+        gf.innerHTML = '<span style="font-size:12px;color:var(--text-muted)">Group:</span>';
+        const allBtn = document.createElement('button');
+        allBtn.className = 'btn btn-sm' + (currentGroupFilter === '' ? ' btn-active' : '');
+        allBtn.dataset.group = '';
+        allBtn.textContent = 'All (' + devices.length + ')';
+        allBtn.onclick = function() { filterGroup(this,''); };
+        gf.appendChild(allBtn);
+        for (const g of Object.keys(groups).sort()) {
+            const btn = document.createElement('button');
+            btn.className = 'btn btn-sm' + (currentGroupFilter === g ? ' btn-active' : '');
+            btn.dataset.group = g;
+            btn.textContent = g + ' (' + groups[g] + ')';
+            btn.onclick = function() { filterGroup(this, g); };
+            gf.appendChild(btn);
+        }
+
+        const filtered = currentGroupFilter ? devices.filter(d => (d.group || 'Ungrouped') === currentGroupFilter) : devices;
+        filtered.forEach(d => {
+            const wifi = d.source === 'wifi';
+            const brandLabel = d.brand && d.brand !== 'generic' ? d.brand : '';
+            const badge = wifi ? '<span class="badge-wifi">WiFi</span>' + (brandLabel ? '<span class="badge-brand">' + brandLabel + '</span>' : '') : '';
+            const grp = d.group ? '<span class="badge-group">' + d.group + '</span>' : '';
+            const seen = d.last_seen ? ' · ' + timeAgo(d.last_seen) : '';
+            sel.innerHTML += '<option value="' + d.id + '">' + d.name + ' (' + d.location + ')</option>';
+            listDiv.innerHTML += '<div class="device-item" onclick="selectDevice(\'' + d.id + '\')">' +
+                '<div class="dev-info"><strong>' + d.name + '</strong>' + badge + grp + '<small>' + d.location + seen + '</small></div>' +
+                '<div style="display:flex;align-items:center;gap:6px">' + liveStatus(d.last_seen) +
+                '<span class="dev-action" onclick="event.stopPropagation();renameDevice(\'' + d.id + '\',\'' + d.name.replace(/'/g, "\\'") + '\')" title="Ndrysho emrin">✏️</span>' +
+                (wifi ? '<span class="dev-action" onclick="event.stopPropagation();editGroup(\'' + d.id + '\',\'' + (d.group || '') + '\')" title="Ndrysho grupin">⚙️</span>' : '') +
+                (wifi ? '<span class="dev-remove" onclick="event.stopPropagation();removeWifiDevice(\'' + d.id + '\')" title="Hiq pajisjen">✕</span>' : '') + '</div>' +
+            '</div>';
+        });
+        if (!currentDeviceId || !devices.find(d => d.id === currentDeviceId)) {
+            currentDeviceId = devices[0].id;
+            sel.value = currentDeviceId;
+        }
+        await loadDeviceData();
+        loadStats();
+    }
+
+    function filterGroup(btn, group) {
+        document.querySelectorAll('#groupFilter .btn').forEach(b => b.classList.remove('btn-active'));
+        btn.classList.add('btn-active');
+        currentGroupFilter = group;
+        loadDevices();
+    }
+
+    async function editGroup(deviceId, current) {
+        const g = prompt('Shkruaj emrin e grupit p\u00ebr k\u00ebt\u00eb pajisje (p.sh. Dhoma e ndenjes, Kati 1):', current);
+        if (g === null) return;
+        await apiCall('/devices/' + deviceId, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({group: g}) });
+        loadDevices();
+        notify('Grupi u p\u00ebrdit\u00ebsua', 'success');
+    }
+
+    async function renameDevice(deviceId, currentName) {
+        const name = prompt('Shkruaj emrin e ri p\u00ebr k\u00ebt\u00eb pajisje:', currentName);
+        if (!name || name === currentName) return;
+        await apiCall('/devices/' + deviceId, { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name: name}) });
+        loadDevices();
+        if (currentDeviceId === deviceId) {
+            document.getElementById('selectedDeviceHint').textContent = 'Zgjedhur: ' + name;
+        }
+        notify('Emri u ndryshua n\u00eb "' + name + '"', 'success');
+    }
+
+    async function renameCurrentDevice() {
+        if (!currentDeviceId) return;
+        const dev = allDevices.find(d => d.id === currentDeviceId);
+        if (!dev) return;
+        await renameDevice(currentDeviceId, dev.name);
+    }
+
+    function selectDevice(id) {
+        document.getElementById('deviceSelect').value = id;
+        currentDeviceId = id;
+        loadDeviceData();
+    }
+
+    let refreshPaused = false;
+
+    function switchTab(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.toggle('active', b.dataset.tab === tabId));
+        document.querySelectorAll('.tab-content').forEach(c => c.classList.toggle('active', c.id === 'tab-' + tabId));
+        refreshPaused = tabId !== 'dashboard';
+        if (tabId === 'devices') loadDevices();
+    }
+
+    async function addSimulated() {
+        const name = 'Test-' + new Date().toLocaleTimeString('sq');
+        const res = await apiCall('/devices', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({name, device_type:'sensor'}) });
+        if (res) { notify('Pajisja e testimit u krijua', 'success'); loadDevices(); }
+        else notify('Dështoi', 'error');
+    }
+
+    async function quickAddSensor(sensorType) {
+        const isContact = sensorType === 'contact';
+        const name = (isContact ? 'Dera-' : 'Sensor-') + new Date().toLocaleTimeString('sq');
+        const res = await apiCall('/devices/wifi', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                name,
+                location: '',
+                sensor_type: sensorType,
+                unit: isContact ? 'binary' : 'C',
+                device_type: sensorType,
+                mac_address: null,
+                brand: 'generic'
+            })
+        });
+        if (!res) return notify('Regjistrimi dështoi', 'error');
+        const host = window.location.hostname;
+        if (host !== 'localhost' && host !== '127.0.0.1') {
+            res.ingest_url = res.ingest_url.replace('localhost', host).replace('127.0.0.1', host);
+        }
+        lastWifiCreds = res;
+        document.getElementById('credDeviceId').value = res.id;
+        document.getElementById('credApiKey').value = res.api_key;
+        document.getElementById('credIngestUrl').value = res.ingest_url;
+        document.getElementById('wifiSetupPanel').style.display = 'block';
+        document.getElementById('wifiSetupPanel').scrollIntoView({ behavior:'smooth', block:'center' });
+        notify((isContact ? 'Sensori i derës' : 'Sensori i temperaturës') + ' u regjistrua!', 'success');
+        loadDevices();
+        selectDevice(res.id);
+    }
+
+    async function loadDeviceData() {
+        const id = document.getElementById('deviceSelect').value;
+            if(!id || id==='Zgjidh pajisjen') {
+            currentDeviceId = null;
+            document.getElementById('selectedDeviceHint').textContent = 'Asnj\u00eb pajisje e zgjedhur';
+            document.getElementById('renameDeviceBtn').style.display = 'none';
+            anomalyColors = null;
+            resetVisuals();
+            document.getElementById('contactPanel').style.display = 'none';
+            return;
+        }
+        currentDeviceId = id;
+        const selectedLabel = document.getElementById('deviceSelect').selectedOptions[0]?.textContent || id;
+        document.getElementById('selectedDeviceHint').textContent = `Zgjedhur: ${selectedLabel}`;
+        document.getElementById('renameDeviceBtn').style.display = 'inline';
+        document.getElementById('lastUpdatedHint').textContent = `• Përditësimi i fundit: ${new Date().toLocaleTimeString()}`;
+        const devInfo = await apiCall(`/devices/${id}`);
+        const isContact = devInfo && (devInfo.sensor_type === 'contact' || devInfo.device_type === 'contact');
+        document.getElementById('selectedDeviceStatus').innerHTML = devInfo ? liveStatus(devInfo.last_seen) : '<span class="status-offline">offline</span>';
+        document.querySelector('.chart-row').style.display = isContact ? 'none' : '';
+        document.getElementById('contactPanel').style.display = isContact ? '' : 'none';
+        if (isContact) {
+            renderContactData(id);
+            return;
+        }
+        let fromDate = document.getElementById('dateFrom')?.value || '';
+        const toDate = document.getElementById('dateTo')?.value || '';
+        if (!fromDate && !toDate && currentTimeRange) {
+            const d = new Date(Date.now() - currentTimeRange * 1000);
+            const pad = n => String(n).padStart(2, '0');
+            fromDate = `${d.getFullYear()}-${pad(d.getMonth()+1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+        }
+        let dataUrl = `/devices/${id}/data?limit=500`;
+        if (fromDate) dataUrl += '&from_date=' + encodeURIComponent(fromDate);
+        if (toDate) dataUrl += '&to_date=' + encodeURIComponent(toDate);
+        const data = await apiCall(dataUrl);
+        if(!data || !data.length) {
+            resetVisuals(`No readings yet for "${selectedLabel}".`);
+            return;
+        }
+        document.getElementById('chartEmptyState').style.display = 'none';
+        const newPoints = id === lastDataIdForDevice && currentValues.length > 0 && data[0].id !== undefined && !predictionOverlay && !mlPredictionOverlay
+            ? data.filter(d => d.id > lastDataId) : null;
+        if (newPoints && newPoints.length > 0) {
+            lastDataId = newPoints[newPoints.length - 1].id;
+            for (const p of newPoints) {
+                if ((p.sensor_type||'temperature') === 'temperature') {
+                    currentValues.push(p.value); currentLabels.push(p.timestamp);
+                } else {
+                    humidityValues.push(p.value); humidityLabels.push(p.timestamp);
+                }
+            }
+            updateChart();
+            updateHistogram(currentValues, 10);
+            updateAutocorrelation(currentValues);
+            return;
+        }
+        anomalyColors = null;
+        lastDataIdForDevice = id;
+        lastDataId = data[data.length - 1].id;
+        const tempPts = data.filter(d => (d.sensor_type||'temperature') === 'temperature');
+        const humPts = data.filter(d => d.sensor_type === 'humidity');
+        currentLabels = tempPts.map(d => d.timestamp);
+        currentValues = tempPts.map(d => d.value);
+        humidityLabels = humPts.map(d => d.timestamp);
+        humidityValues = humPts.map(d => d.value);
+        updateChart();
+        updateHistogram(currentValues, 10);
+        updateAutocorrelation(currentValues);
+    }
+
+    async function renderContactData(deviceId) {
+        const data = await apiCall(`/devices/${deviceId}/data?limit=50`);
+        if (!data || !data.length) {
+            document.getElementById('contactStatusLabel').textContent = 'Pa të dhëna';
+            document.getElementById('contactLastChanged').textContent = '--';
+            document.getElementById('contactEventLog').innerHTML = '<div style="color:var(--text-muted);padding:12px">Ende pa ngjarje.</div>';
+            return;
+        }
+        const last = data[data.length - 1];
+        const isOpen = last.value === 0;
+        const icon = document.getElementById('contactStatusIcon');
+        icon.style.background = isOpen ? 'var(--offline-bg)' : 'var(--online-bg)';
+        icon.textContent = isOpen ? '🚪' : '🔒';
+        document.getElementById('contactStatusLabel').textContent = isOpen ? 'Hapur' : 'Mbyllur';
+        document.getElementById('contactStatusLabel').style.color = isOpen ? 'var(--offline-text)' : 'var(--online-text)';
+        document.getElementById('contactLastChanged').textContent = 'Fundit: ' + new Date(last.timestamp).toLocaleString();
+        // Incremental: only append new rows
+        if (_lastContactEventCount > 0 && data.length > _lastContactEventCount) {
+            const newRows = data.slice(_lastContactEventCount).reverse();
+            const tbody = document.getElementById('contactEventBody');
+            if (tbody) {
+                let html = '';
+                for (const d of newRows) {
+                    const open = d.value === 0;
+                    html = `<tr><td style="padding:4px 8px;border-bottom:1px solid var(--border);font-size:12px">${new Date(d.timestamp).toLocaleString()}</td><td style="padding:4px 8px;border-bottom:1px solid var(--border)">${open ? '🚪 Hapur' : '🔒 Mbyllur'}</td></tr>` + html;
+                }
+                tbody.innerHTML = html + tbody.innerHTML;
+                _lastContactEventCount = data.length;
+                return;
+            }
+        }
+        _lastContactEventCount = data.length;
+        let html = '<table style="width:100%;border-collapse:collapse"><tr style="color:var(--text-muted);font-size:11px"><th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Koha</th><th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Statusi</th></tr><tbody id="contactEventBody">';
+        for (const d of data.slice().reverse()) {
+            const open = d.value === 0;
+            html += `<tr><td style="padding:4px 8px;border-bottom:1px solid var(--border);font-size:12px">${new Date(d.timestamp).toLocaleString()}</td><td style="padding:4px 8px;border-bottom:1px solid var(--border)">${open ? '🚪 Hapur' : '🔒 Mbyllur'}</td></tr>`;
+        }
+        html += '</tbody></table>';
+        document.getElementById('contactEventLog').innerHTML = html;
+    }
+
+    // Lightweight incremental poll — appends data directly to charts, no re-render
+    async function pollDeviceData() {
+        if (!currentDeviceId || refreshPaused) return;
+        // Handle contact sensors
+        const dev = allDevices.find(d => d.id === currentDeviceId);
+        const isContact = dev && (dev.sensor_type === 'contact' || dev.device_type === 'contact');
+        if (isContact) {
+            await loadDeviceData();
+            return;
+        }
+        if (currentValues.length === 0) return;
+        // If predictions are active, fall back to silent full refresh
+        if (predictionOverlay || mlPredictionOverlay) {
+            await loadDeviceData();
+            return;
+        }
+        const data = await apiCall(`/devices/${currentDeviceId}/data?limit=500`);
+        if (!data || !data.length) return;
+        const newPoints = data.filter(d => d.id > lastDataId);
+        if (newPoints.length === 0) return;
+        lastDataId = newPoints[newPoints.length - 1].id;
+        for (const p of newPoints) {
+            const idx = (p.sensor_type || 'temperature') === 'temperature' ? 0 : 1;
+            const vals = idx === 0 ? currentValues : humidityValues;
+            const labels = idx === 0 ? currentLabels : humidityLabels;
+            vals.push(p.value);
+            labels.push(p.timestamp);
+            const chartRef = idx === 0 ? tempChart : humidityChart;
+            if (chartRef && chartRef.data.datasets.length > 0) {
+                chartRef.data.labels.push(p.timestamp);
+                chartRef.data.datasets[0].data.push(p.value);
+                chartRef.update('none');
+            }
+        }
+        document.getElementById('lastUpdatedHint').textContent = '• Përditësimi i fundit: ' + new Date().toLocaleTimeString();
+        _pollCount++;
+        if (_pollCount % 5 === 0) {
+            updateHistogram(currentValues, 10);
+            updateAutocorrelation(currentValues);
+        }
+    }
+
+    function startAutoRefresh() {
+        if(refreshInterval) clearInterval(refreshInterval);
+        refreshInterval = setInterval(() => { if(currentDeviceId && !refreshPaused) pollDeviceData(); }, 3000);
+        checkDeviceStatus();
+    }
+
+    let lastOnlineCount = 0, lastOfflineCount = 0;
+    async function checkDeviceStatus() {
+        const devices = await apiCall('/devices');
+        if (!devices) return;
+        const now = Date.now();
+        const online = devices.filter(d => {
+            if (!d.last_seen) return d.source !== 'wifi';
+            return now - new Date(d.last_seen).getTime() < 120000;
+        }).length;
+        const offline = devices.length - online;
+        const bar = document.getElementById('deviceStatusBar');
+        if (bar) {
+            if (bar.children.length < 2) {
+                bar.innerHTML = '<span class="status-pill online"></span><span class="status-pill offline"></span>';
+            }
+            bar.children[0].textContent = '● ' + online + ' online';
+            bar.children[1].textContent = '● ' + offline + ' offline';
+        }
+        if (offline > lastOfflineCount && lastOfflineCount !== 0)         notify(`⚠️ ${offline - lastOfflineCount} pajisje u shkëputën`, 'warning');
+        lastOnlineCount = online; lastOfflineCount = offline;
+        const sel = document.getElementById('deviceSelect');
+        if (sel && sel.value && sel.value !== 'Select device') {
+            const dev = devices.find(d => d.id === sel.value);
+            const statusEl = document.getElementById('selectedDeviceStatus');
+            if (dev && statusEl) {
+                const since = dev.last_seen;
+                const ms = since ? Date.now() - new Date(since).getTime() : Infinity;
+                statusEl.className = ms < 300000 ? 'status-pill online' : 'status-pill offline';
+                statusEl.textContent = ms < 300000 ? 'drejtpërdrejt' : (ms < 3600000 ? Math.floor(ms / 60000) + 'min më parë' : (since ? timeAgo(since) : 'offline'));
+            }
+        }
+        setTimeout(checkDeviceStatus, 10000);
+    }
+
+    async function simulateData() {
+        if(!currentDeviceId) return notify('Zgjidh një pajisje së pari', 'info');
+        const devices = await apiCall('/devices');
+        const dev = devices && devices.find(d => d.id === currentDeviceId);
+        if(dev && dev.source === 'wifi') return notify('Pajisjet WiFi marrin të dhëna nga hardueri. Përdor "Dërgo të dhëna" ose prit sensorin.', 'info');
+        // Temperature
+        for(let i=0;i<20;i++){
+            const val = 23 + Math.random()*4;
+            await apiCall('/sensor-data', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({device_id:currentDeviceId, value:parseFloat(val.toFixed(1)), sensor_type:'temperature', unit:'C'}) });
+        }
+        for(let v of [38,40,42]) await apiCall('/sensor-data', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({device_id:currentDeviceId, value:v, sensor_type:'temperature', unit:'C'}) });
+        // Humidity
+        for(let i=0;i<20;i++){
+            const val = 45 + Math.random()*15;
+            await apiCall('/sensor-data', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({device_id:currentDeviceId, value:parseFloat(val.toFixed(1)), sensor_type:'humidity', unit:'%'}) });
+        }
+        for(let v of [85,90,95]) await apiCall('/sensor-data', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({device_id:currentDeviceId, value:v, sensor_type:'humidity', unit:'%'}) });
+        notify('Të dhënat u simuluan', 'success');
+        loadDeviceData();
+        loadStats();
+    }
+
+    function setDelta(val){ currentDelta=val; document.getElementById('deltaThreshold').value=val; }
+    document.getElementById('deltaThreshold').addEventListener('change', e=>setDelta(parseFloat(e.target.value)));
+
+    async function runAnalysis() {
+        if(!currentDeviceId) return notify('Zgjidh një pajisje së pari', 'info');
+        if (!currentValues || currentValues.length < 10) return notify('Duhen t\u00eb pakt\u00ebn 10 lexime temperature p\u00ebr analiz\u00eb', 'info');
+        // Send exact chart values so anomaly indices always match chart data
+        const valsStr = currentValues.join(',');
+        const res = await apiCall(`/ai/analyze?device_id=${currentDeviceId}&sensor_type=temperature&delta=${currentDelta}&values=${encodeURIComponent(valsStr)}`, { method:'POST' });
+        if(res && !res.error){
+            const cls = res.status==='CRITICAL'?'alert-danger':(res.status==='WARNING'?'alert-warning':'alert-success');
+            const methodLabel = res.normal_range.low === res.q1 ? `Delta \u00b1${currentDelta}\u00b0C` : 'IQR';
+            document.getElementById('analysisResult').innerHTML = `<div class="alert-box ${cls}"><strong>Analiza AI (${methodLabel})</strong><br>Pikat: ${res.total_points} | Q1=${res.q1} Q3=${res.q3} | IQR=${res.iqr}<br>Intervali normal: ${res.normal_range.low} - ${res.normal_range.high}<br>Anomalit\u00eb: ${res.anomaly_count} (${res.anomaly_rate}%)<br>Statusi: ${res.status}</div>`;
+            normalRangeOverlay = { low: res.normal_range.low, high: res.normal_range.high };
+            updateChart();
+            if (tempChart && res.anomaly_indices && res.anomaly_indices.length > 0) {
+                const baseColor = typeof tempChart.data.datasets[0].pointBackgroundColor === 'string'
+                    ? tempChart.data.datasets[0].pointBackgroundColor : '#667eea';
+                const anomalySet = new Set(res.anomaly_indices);
+                const colors = [];
+                for (let i = 0; i < tempChart.data.datasets[0].data.length; i++) {
+                    colors.push(anomalySet.has(i) ? '#ff0000' : baseColor);
+                }
+                anomalyColors = { colors, baseColor, anomalySet };
+                tempChart.data.datasets[0].pointBackgroundColor = colors;
+                tempChart.update();
+            }
+        } else notify('Analiza dështoi', 'error');
+    }
+
+    async function runPrediction() {
+        if(!currentDeviceId) return notify('Zgjidh një pajisje së pari', 'info');
+        const res = await apiCall(`/predict?device_id=${currentDeviceId}&hours=24`, { method:'POST' });
+        if(res && !res.error){
+            const trendIcon = res.trend==='increasing'?'📈':(res.trend==='decreasing'?'📉':'➡️');
+            const tableRows = res.predictions.map((v,i) =>
+                `<tr><td style="padding:4px 8px;border-bottom:1px solid var(--border);font-size:12px">${i+1}h</td>` +
+                `<td style="padding:4px 8px;border-bottom:1px solid var(--border);font-size:12px">${v.toFixed(1)}</td>` +
+                `<td style="padding:4px 8px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-muted)">${res.lower_bounds ? res.lower_bounds[i].toFixed(1) : '-'}</td>` +
+                `<td style="padding:4px 8px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-muted)">${res.upper_bounds ? res.upper_bounds[i].toFixed(1) : '-'}</td></tr>`
+            ).join('');
+            document.getElementById('predictionResult').innerHTML = `
+                <div class="prediction-box">
+                    <div class="prediction-stats">
+                        <div class="prediction-stat"><div class="prediction-stat-value">${trendIcon}</div><div>Tendenca (${res.model})</div></div>
+                        <div class="prediction-stat"><div class="prediction-stat-value">${res.expected_range.min.toFixed(1)} - ${res.expected_range.max.toFixed(1)}</div><div>Intervali</div></div>
+                        <div class="prediction-stat"><div class="prediction-stat-value">${res.rmse.toFixed(3)}</div><div>RMSE</div></div>
+                    </div>
+                    <div><strong>6 orët e ardhshme:</strong> ${res.next_6h.map((v,i)=>`${i+1}h: ${v.toFixed(1)}`).join(' → ')}</div>
+                    <details style="margin-top:12px;cursor:pointer">
+                        <summary style="font-size:13px;color:var(--text-secondary)">📋 Full 24h table</summary>
+                        <div style="max-height:300px;overflow-y:auto;margin-top:8px">
+                            <table style="width:100%;border-collapse:collapse;font-size:13px">
+                                <tr style="color:var(--text-muted);font-size:11px">
+                                    <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Hour</th>
+                                    <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Value</th>
+                                    <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Lower</th>
+                                    <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Upper</th>
+                                </tr>
+                                ${tableRows}
+                            </table>
+                        </div>
+                    </details>
+                </div>`;
+            predictionOverlay = {
+                values: res.predictions,
+                lower_bounds: res.lower_bounds,
+                upper_bounds: res.upper_bounds,
+                label: 'Parashiko 24h (' + res.model + ')',
+                dash: [6, 3]
+            };
+            updateChart();
+        } else notify('Parashikimi dështoi', 'error');
+    }
+
+    function clearPredictions() {
+        predictionOverlay = null;
+        mlPredictionOverlay = null;
+        document.getElementById('predictionResult').innerHTML = '';
+        updateChart();
+        notify('Parashikimet u pastruan', 'info');
+    }
+
+    function setTimeRange(seconds) {
+        currentTimeRange = seconds;
+        document.querySelectorAll('.time-range-btns .btn').forEach(b => b.classList.remove('btn-active'));
+        const btn = document.querySelector(`.time-range-btns .btn[data-range="${seconds}"]`);
+        if (btn) btn.classList.add('btn-active');
+        const df = document.getElementById('dateFrom');
+        if (df) df.value = '';
+        const dt = document.getElementById('dateTo');
+        if (dt) dt.value = '';
+        loadDeviceData();
+    }
+
+    function clearDateRange() {
+        document.getElementById('dateFrom').value = '';
+        document.getElementById('dateTo').value = '';
+        loadDeviceData();
+    }
+
+    async function startAutopilot() {
+        await apiCall('/autopilot/start', { method:'POST' });
+        document.getElementById('autopilotStatus').innerHTML = '🟢 Aktiv';
+        document.getElementById('autopilotStatus').className = 'active';
+        if(autoInterval) clearInterval(autoInterval);
+        autoInterval = setInterval(async () => {
+            if(currentDeviceId){
+        const res = await apiCall(`/ai/analyze?device_id=${currentDeviceId}&sensor_type=temperature&delta=${currentDelta}&trend_only=true`, { method:'POST' });
+                if(res && res.anomaly_count>0){
+                    const alertDiv = document.getElementById('alertsContainer');
+                    const temp = res.current_temp != null ? res.current_temp.toFixed(1) : '?';
+                    const hum = res.current_humidity != null ? res.current_humidity.toFixed(1) : '?';
+                    alertDiv.innerHTML = `<div class="alert-box alert-warning">🔴 Anomali në ${new Date().toLocaleTimeString()}: ${res.anomaly_count} pika ±${currentDelta}°C (${res.anomaly_rate}%) | 🌡️ ${temp}°C 💧 ${hum}%</div>` + alertDiv.innerHTML;
+                    if(alertDiv.children.length>5) alertDiv.removeChild(alertDiv.lastChild);
+                    await apiCall('/autopilot/alert', { method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify({device: document.getElementById('deviceSelect').options[document.getElementById('deviceSelect').selectedIndex]?.text, value: res.anomaly_count, temp: temp, humidity: hum, message: `Anomali: ${temp}°C ${hum}% | ${res.anomaly_count} pika jashtë ±${currentDelta}°C`}) });
+                }
+            }
+        }, 30000);
+        notify('Autopiloti u nis', 'success');
+    }
+
+    async function stopAutopilot() {
+        await apiCall('/autopilot/stop', { method:'POST' });
+        document.getElementById('autopilotStatus').innerHTML = '⏸️ Joaktiv';
+        document.getElementById('autopilotStatus').className = '';
+        if(autoInterval) clearInterval(autoInterval);
+        notify('Autopiloti u ndal', 'info');
+    }
+
+    async function showAlerts() {
+        const res = await apiCall('/autopilot/alerts');
+        if(res && res.alerts.length){
+            let txt = 'Alarmet e fundit:\n';
+            res.alerts.slice(0,8).forEach(a => txt += `${a.timestamp.slice(11,19)} - ${a.device}: 🌡️${a.temp||'?'}°C 💧${a.humidity||'?'}%\n`);
+            alert(txt);
+        } else notify('Pa alarme', 'info');
+    }
+
+    async function trainML() {
+        if(!currentDeviceId) return notify('Zgjidh një pajisje së pari', 'info');
+        const res = await apiCall(`/ml/train?device_id=${currentDeviceId}&lookback=10`, { method:'POST' });
+        if(res && res.success){
+            document.getElementById('mlStatus').innerHTML = `✅ I trajnuar (R²=${res.metrics.r2})`;
+            notify('Modeli ML u trajnua', 'success');
+        } else notify('Trajnimi dështoi: '+(res.error||'i panjohur'), 'error');
+    }
+
+    async function predictML() {
+        if(!currentDeviceId) return notify('Zgjidh një pajisje së pari', 'info');
+        const res = await apiCall(`/ml/predict?device_id=${currentDeviceId}&steps_ahead=24&lookback=10`, { method:'POST' });
+            if(res && res.success){
+                const p = res.predictions;
+                const stats = res.statistics;
+                const trendIcon = res.trend==='increasing'?'📈':'📉';
+                const tableRows = p.map((v,i) =>
+                    `<tr><td style="padding:4px 8px;border-bottom:1px solid var(--border);font-size:12px">${i+1}h</td>` +
+                    `<td style="padding:4px 8px;border-bottom:1px solid var(--border);font-size:12px">${v.toFixed(1)}</td>` +
+                    `<td style="padding:4px 8px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-muted)">${res.lower_bounds ? res.lower_bounds[i].toFixed(1) : '-'}</td>` +
+                    `<td style="padding:4px 8px;border-bottom:1px solid var(--border);font-size:12px;color:var(--text-muted)">${res.upper_bounds ? res.upper_bounds[i].toFixed(1) : '-'}</td></tr>`
+                ).join('');
+                document.getElementById('mlResult').innerHTML = `
+                    <div class="prediction-box">
+                        <div class="prediction-stats">
+                            <div class="prediction-stat"><div class="prediction-stat-value">${trendIcon}</div><div>Tendenca ML</div></div>
+                            <div class="prediction-stat"><div class="prediction-stat-value">${stats.min.toFixed(1)} - ${stats.max.toFixed(1)}</div><div>Intervali</div></div>
+                            <div class="prediction-stat"><div class="prediction-stat-value">${stats.mean.toFixed(1)}</div><div>Mesatarja</div></div>
+                        </div>
+                        <div><strong>6 orët e ardhshme:</strong> ${p.slice(0,6).map((v,i)=>`${i+1}h: ${v.toFixed(1)}`).join(' → ')}</div>
+                        <div>                    <small>CI 95%: [${stats.confidence_interval.lower.toFixed(1)}, ${stats.confidence_interval.upper.toFixed(1)}] · RMSE: ${res.rmse || 'N/A'}</small></div>
+                        <details style="margin-top:12px;cursor:pointer">
+                            <summary style="font-size:13px;color:var(--text-secondary)">📋 Tabela e plotë 24h</summary>
+                            <div style="max-height:300px;overflow-y:auto;margin-top:8px">
+                                <table style="width:100%;border-collapse:collapse;font-size:13px">
+                                    <tr style="color:var(--text-muted);font-size:11px">
+                                        <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Ora</th>
+                                        <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Vlera</th>
+                                        <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Min</th>
+                                        <th style="text-align:left;padding:6px 8px;border-bottom:1px solid var(--border)">Max</th>
+                                    </tr>
+                                    ${tableRows}
+                                </table>
+                            </div>
+                        </details>
+                    </div>`;
+            mlPredictionOverlay = {
+                values: res.predictions,
+                lower_bounds: res.lower_bounds,
+                upper_bounds: res.upper_bounds,
+                label: 'Parashikimi ML 24h',
+                dash: [3, 3]
+            };
+            updateChart();
+        } else notify('Parashikimi ML dështoi: '+(res.error||'Trajno modelin së pari'), 'error');
+    }
+
+    async function registerWifiDevice() {
+        addWifiSensor();
+    }
+
+    function copyText(id) {
+        const el = document.getElementById(id);
+        el.select();
+        navigator.clipboard.writeText(el.value).then(() => notify('U kopjua!', 'success'));
+    }
+
+    function copyAllCreds() {
+        if (!lastWifiCreds) return notify('Regjistro një pajisje së pari', 'info');
+        const txt = 'URL e dërgimit: ' + lastWifiCreds.ingest_url + '\n'
+            + 'ID e pajisjes: ' + lastWifiCreds.id + '\n'
+            + 'Çelësi API: ' + lastWifiCreds.api_key + '\n\n'
+            + `POST në ${lastWifiCreds.ingest_url}\n`
+            + 'Headers: X-Device-Id, X-Device-Key, Content-Type: application/json\n'
+            + 'Body: {"value": 23.5, "sensor_type": "temperature", "unit": "C"}';
+        navigator.clipboard.writeText(txt).then(() => notify('Të gjitha kredencialet u kopjuan', 'success'));
+    }
+
+    async function testWifiIngest() {
+        if (!lastWifiCreds) return notify('Regjistro një pajisje së pari', 'info');
+        const res = await fetch(lastWifiCreds.ingest_url, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-Device-Id': lastWifiCreds.id,
+                'X-Device-Key': lastWifiCreds.api_key
+            },
+            body: JSON.stringify({ value: 22.5, sensor_type: lastWifiCreds.sensor_type || 'temperature', unit: lastWifiCreds.unit || 'C' })
+        });
+        if (res.ok) {
+            notify('Leximi test u dërgua', 'success');
+            loadDevices();
+            loadDeviceData();
+        } else notify('Testi dështoi: ' + res.status, 'error');
+    }
+
+    async function removeWifiDevice(id) {
+        if (!confirm('Hiq këtë pajisje WiFi?')) return;
+        const res = await fetch('/devices/' + id, { method: 'DELETE' });
+        if (res.ok) { loadDevices(); notify('U hoq', 'success'); }
+        else notify('Nuk mund të hiqej', 'error');
+    }
+
+    async function saveTelegram() {
+        const cfg = { telegram: {
+            enabled: document.getElementById('tgEnabled').checked,
+            bot_token: document.getElementById('tgToken').value,
+            chat_id: document.getElementById('tgChatId').value
+        }};
+        const st = document.getElementById('tgStatus');
+        st.textContent = '⏳ Saving...';
+        try {
+            const res = await fetch(window.location.origin + '/notifications/config', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(cfg) });
+            if (res.ok) { notify('Konfigurimi Telegram u ruajt', 'success'); st.textContent = '✅ U ruajt'; }
+            else { const txt = await res.text(); notify('Ruajtja dështoi: HTTP ' + res.status, 'error'); st.textContent = '❌ HTTP ' + res.status; console.error('Telegram save error:', txt); }
+        } catch(e) { notify('Gabim rrjeti: ' + e.message, 'error'); st.textContent = '❌ Gabim rrjeti'; }
+    }
+
+    async function loadTelegram() {
+        const res = await apiCall('/notifications/config');
+        if (res && res.telegram) {
+            document.getElementById('tgToken').value = res.telegram.bot_token || '';
+            document.getElementById('tgChatId').value = res.telegram.chat_id || '';
+            document.getElementById('tgEnabled').checked = !!res.telegram.enabled;
+            const enabled = res.telegram.enabled && res.telegram.bot_token && res.telegram.chat_id;
+            document.getElementById('tgWarning').style.display = enabled ? 'none' : 'block';
+        }
+    }
+
+    async function testTelegram() {
+        const token = document.getElementById('tgToken').value;
+        const chatId = document.getElementById('tgChatId').value;
+        if (!token || !chatId) return notify('Plotëso fillimisht token-in dhe ID-në e chat-it', 'error');
+        try {
+            await saveTelegram();
+            const r = await fetch('https://api.telegram.org/bot' + token + '/sendMessage', {
+                method:'POST', headers:{'Content-Type':'application/json'},
+                body: JSON.stringify({chat_id: chatId, text: '🔔 IoT Platform test message'})
+            });
+            if (r.ok) { notify('Testi Telegram u dërgua!', 'success'); document.getElementById('tgStatus').textContent = '✅ Testi u dërgua'; }
+            else { notify('Testi Telegram dështoi: ' + await r.text(), 'error'); }
+        } catch(e) { notify('Gabim Telegram: ' + e.message, 'error'); }
+    }
+
+    async function populateTuyaDevices() {
+        const sel = document.getElementById('tuyaDeviceSelect');
+        if (!sel) return;
+        const devices = await apiCall('/devices');
+        const opts = sel.options;
+        for (let i = opts.length - 1; i >= 0; i--) opts.remove(i);
+        const opt = document.createElement('option');
+        opt.value = ''; opt.textContent = '-- Select a registered WiFi device --';
+        sel.appendChild(opt);
+        if (devices) for (const d of devices) {
+            if (d.source === 'wifi') {
+                const o = document.createElement('option');
+                o.value = d.id; o.textContent = d.name + ' (' + d.id + ')';
+                sel.appendChild(o);
+            }
+        }
+    }
+
+    async function loadTuya() {
+        const res = await apiCall('/tuya/config');
+        if (res) {
+            document.getElementById('tuyaAccessId').value = res.access_id || '';
+            document.getElementById('tuyaAccessSecret').value = res.access_secret || '';
+            document.getElementById('tuyaDeviceId').value = res.tuya_device_id || '';
+            document.getElementById('tuyaInterval').value = res.interval_seconds || 60;
+            await populateTuyaDevices();
+            if (res.local_device_id) document.getElementById('tuyaDeviceSelect').value = res.local_device_id;
+        } else {
+            await populateTuyaDevices();
+        }
+        checkTuyaBridgeStatus();
+    }
+
+    async function checkTuyaBridgeStatus() {
+        const st = await apiCall('/tuya/status');
+        const el = document.getElementById('tuyaBridgeStatus');
+        if (st && st.running) el.innerHTML = '<span class="status-pill online">● Ura aktive</span>';
+        else el.innerHTML = '<span class="status-pill offline">● Ura joaktive</span>';
+        setTimeout(checkTuyaBridgeStatus, 15000);
+    }
+
+    async function saveTuya() {
+        const sel = document.getElementById('tuyaDeviceSelect');
+        let localId = sel.value;
+        const st = document.getElementById('tuyaStatus');
+        st.textContent = '⏳ Duke ruajtur...';
+        // Auto-create a WiFi device if none selected
+        if (!localId) {
+            st.textContent = '⏳ Duke krijuar pajisjen...';
+            const created = await apiCall('/devices/wifi', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name: 'Tuya-' + document.getElementById('tuyaDeviceId').value.slice(-6), location: 'Tuya Bridge', sensor_type: 'temperature', unit: 'C', device_type: 'temperature', mac_address: null, brand: 'tuya' })
+            });
+            if (!created) { notify('Krijimi automatik i pajisjes dështoi', 'error'); st.textContent = '❌ Krijimi dështoi'; return; }
+            localId = created.id;
+            // Refresh the dropdown
+            await populateTuyaDevices();
+            sel.value = localId;
+        }
+        const cfg = {
+            access_id: document.getElementById('tuyaAccessId').value,
+            access_secret: document.getElementById('tuyaAccessSecret').value,
+            tuya_device_id: document.getElementById('tuyaDeviceId').value,
+            local_device_id: localId,
+            interval_seconds: parseInt(document.getElementById('tuyaInterval').value) || 60
+        };
+        try {
+            const res = await fetch(window.location.origin + '/tuya/config', { method:'PUT', headers:{'Content-Type':'application/json'}, body: JSON.stringify(cfg) });
+            if (res.ok) { notify('Pajisja Tuya u lidh: ' + localId, 'success'); st.textContent = '✅ U lidh'; }
+            else { const txt = await res.text(); notify('Ruajtja dështoi: HTTP ' + res.status, 'error'); st.textContent = '❌ HTTP ' + res.status; console.error('Tuya save error:', txt); }
+        } catch(e) { notify('Gabim rrjeti: ' + e.message, 'error'); st.textContent = '❌ Gabim rrjeti'; }
+    }
+
+
+
+    try {
+        setSigma(2.5);
+        resetVisuals();
+        if (window.location.protocol === 'https:') document.getElementById('sslBadge').style.display = 'inline';
+    } catch(e) { console.error('Init error:', e); }
+    loadDevices().then(function() { console.log('Devices loaded OK'); }, function(e) { console.error('loadDevices failed:', e); });
+    startAutoRefresh();
+    setInterval(loadStats, 15000);
+    loadTelegram();
+    loadTuya();
+</script>
+</body>
+</html>

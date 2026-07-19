@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #fff; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 30px; }
+.container { max-width: 800px; width: 100%; }
+h2 { font-size: 14pt; color: #333; margin-bottom: 16px; text-align: center; font-weight: normal; }
+pre { background: #1e1e2e; color: #d4d4d4; padding: 20px; border-radius: 10px; font-family: 'Consolas', 'Courier New', monospace; font-size: 11pt; line-height: 1.5; overflow-x: auto; box-shadow: 0 4px 16px rgba(0,0,0,0.15); }
+.hl { color: #f5a623; } /* orange/yellow for strings */
+.cm { color: #6a9955; } /* green comments */
+.kw { color: #569cd6; } /* blue keywords */
+.fn { color: #dcdcaa; } /* yellow functions */
+.str { color: #ce9178; } /* orange strings */
+.num { color: #b5cea8; } /* green numbers */
+.sec { border-left: 3px solid #f5a623; padding-left: 12px; margin: 4px 0; background: rgba(245,166,35,0.08); border-radius: 0 4px 4px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Figura 8.2: Kodi i ESP32 në Arduino IDE me konstantat e konfigurimit</h2>
+<pre>
+<span class="cm">// ===== KONFIGURIMI =====</span>
+<span class="kw">const char</span>* WIFI_SSID     = <span class="str">"GUXIM 2.4"</span>;
+<span class="kw">const char</span>* WIFI_PASSWORD = <span class="str">"123456789"</span>;
+
+<div class="sec"><span class="kw">const char</span>* DEVICE_ID  = <span class="str">"wifi-a1b2c3d4"</span>;  <span class="cm">// Nga dashboard-i</span>
+<span class="kw">const char</span>* API_KEY    = <span class="str">"xxxxxxxxxxxxxxxx"</span>;  <span class="cm">// Çelës sekret</span></div>
+
+<span class="kw">const char</span>* PLATFORM_HOST = <span class="str">"192.168.1.100"</span>; <span class="cm">// IP e serverit</span>
+<span class="kw">const int</span>   PLATFORM_PORT = <span class="num">8000</span>;
+
+<span class="kw">void</span> <span class="fn">setup</span>() {
+  <span class="cm">// Lidh WiFi-në dhe inicializon DHT22</span>
+  WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
+  dht.begin();
+}
+
+<span class="kw">void</span> <span class="fn">loop</span>() {
+  <span class="cm">// Lexon sensorin çdo 10 sekonda</span>
+  <span class="kw">float</span> t = dht.readTemperature();
+  <span class="kw">float</span> h = dht.readHumidity();
+  <span class="fn">sendData</span>(t, <span class="str">"temperature"</span>, <span class="str">"C"</span>);
+  <span class="fn">sendData</span>(h, <span class="str">"humidity"</span>, <span class="str">"%"</span>);
+}
+
+<span class="kw">void</span> <span class="fn">sendData</span>(<span class="kw">float</span> value, <span class="kw">const char</span>* type, <span class="kw">const char</span>* unit) {
+  <span class="cm">// POST në /api/v1/ingest me headers X-Device-Id dhe X-Device-Key</span>
+  http.addHeader(<span class="str">"X-Device-Id"</span>, DEVICE_ID);
+  http.addHeader(<span class="str">"X-Device-Key"</span>, API_KEY);
+  http.POST(<span class="str">"{ \"value\": 23.5, \"sensor_type\": \"temperature\", \"unit\": \"C\" }"</span>);
+}
+</pre>
+<p style="margin-top:12px;font-size:10pt;color:#666;text-align:center">Konstantat DEVICE_ID dhe API_KEY kopjohen direkt nga dashboard-i pas regjistrimit</p>
+</div>
+</body>
+</html>

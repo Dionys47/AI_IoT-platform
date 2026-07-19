@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #fff; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 30px; }
+.container { max-width: 800px; width: 100%; text-align: center; }
+h2 { font-size: 14pt; color: #333; margin-bottom: 16px; font-weight: normal; }
+canvas { max-width: 100%; }
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Figura 4.5: Tooltip që shfaq vlerën dhe kohën kur vendoset miu mbi një pikë</h2>
+<canvas id="chart"></canvas>
+</div>
+<script>
+const labels = [];
+const data = [];
+const start = new Date();
+start.setMinutes(0, 0, 0);
+for (let i = 0; i < 30; i++) {
+  const t = new Date(start.getTime() + i * 30000);
+  labels.push(t.toLocaleTimeString('sq', { hour: '2-digit', minute: '2-digit', second: '2-digit' }));
+  const val = 23.5 + Math.sin(i * 0.4) * 1.2 + (Math.random() - 0.5) * 0.4;
+  data.push(parseFloat(val.toFixed(1)));
+}
+
+new Chart(document.getElementById('chart'), {
+  type: 'line',
+  data: {
+    labels,
+    datasets: [{
+      label: 'Temperatura (°C)',
+      data,
+      borderColor: '#1976d2',
+      backgroundColor: 'rgba(25,118,210,0.1)',
+      borderWidth: 2,
+      pointRadius: 4,
+      pointHoverRadius: 8,
+      pointBackgroundColor: '#1976d2',
+      pointHoverBackgroundColor: '#d32f2f',
+      fill: true,
+      tension: 0.3
+    }]
+  },
+  options: {
+    responsive: true,
+    interaction: { mode: 'index', intersect: false },
+    plugins: {
+      tooltip: {
+        enabled: true,
+        backgroundColor: '#333',
+        titleColor: '#fff',
+        bodyColor: '#fff',
+        padding: 10,
+        displayColors: false,
+        callbacks: {
+          title: items => 'Koha: ' + items[0].label,
+          label: item => 'Temperatura: ' + item.parsed.y.toFixed(1) + ' °C'
+        }
+      },
+      legend: { display: false }
+    },
+    scales: {
+      x: { grid: { display: false }, ticks: { maxTicksLimit: 8 } },
+      y: { title: { display: true, text: '°C' } }
+    }
+  }
+});
+</script>
+</body>
+</html>

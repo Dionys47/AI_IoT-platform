@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #fff; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+
+.container { text-align: center; padding: 40px; }
+h2 { font-size: 14pt; color: #333; margin-bottom: 30px; font-weight: normal; }
+
+.control-bar { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 8px; padding: 16px 24px; display: inline-flex; align-items: center; gap: 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.06); }
+
+.label { font-size: 11pt; color: #495057; font-weight: 500; }
+
+.btn-group { display: flex; gap: 4px; }
+.btn { padding: 6px 16px; border: 1px solid #ced4da; background: #fff; color: #495057; font-size: 10pt; cursor: pointer; border-radius: 4px; }
+.btn:first-child { border-radius: 4px 0 0 4px; }
+.btn:last-child { border-radius: 0 4px 4px 0; }
+.btn.active { background: #1976d2; color: #fff; border-color: #1976d2; }
+
+.separator { width: 1px; height: 28px; background: #dee2e6; }
+.icon { font-size: 14pt; color: #666; }
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Figura 4.4: Butonat kohorë për zgjedhjen e intervalit në dashboard</h2>
+<div class="control-bar">
+  <span class="icon">⏱</span>
+  <span class="label">Intervali kohor:</span>
+  <div class="btn-group">
+    <button class="btn active">5m</button>
+    <button class="btn">15m</button>
+    <button class="btn">1h</button>
+    <button class="btn">6h</button>
+    <button class="btn">24h</button>
+  </div>
+  <span class="separator"></span>
+  <span class="label" style="color:#999; font-size:9pt;">Auto-refresh: ON</span>
+</div>
+<p style="margin-top: 24px; font-size: 9pt; color: #999;">Butoni "5m" i zgjedhur (aktiv) — grafikët tregojnë 5 minutat e fundit</p>
+</div>
+</body>
+</html>

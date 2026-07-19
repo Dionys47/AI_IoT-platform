@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #fff; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 40px; }
+.container { max-width: 750px; width: 100%; text-align: center; }
+h2 { font-size: 14pt; color: #333; margin-bottom: 24px; font-weight: normal; }
+
+.panel { background: #f8f9fa; border: 1px solid #dee2e6; border-radius: 12px; padding: 24px; text-align: left; box-shadow: 0 2px 12px rgba(0,0,0,0.06); }
+.step { display: flex; align-items: center; gap: 16px; padding: 14px 16px; background: #fff; border: 1px solid #e0e0e0; border-radius: 10px; margin-bottom: 10px; }
+.step-num { width: 32px; height: 32px; border-radius: 50%; background: #1976d2; color: #fff; display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 14px; flex-shrink: 0; }
+.step-desc { font-size: 12pt; color: #333; }
+.step-desc small { display: block; font-size: 10pt; color: #888; margin-top: 2px; }
+
+.creds { background: #e3f2fd; border: 1px solid #90caf9; border-radius: 10px; padding: 18px; margin: 16px 0; }
+.cred-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid rgba(0,0,0,0.06); font-size: 11pt; }
+.cred-row:last-child { border-bottom: none; }
+.cred-label { color: #555; font-weight: 500; }
+.cred-value { font-family: 'Consolas', monospace; font-size: 10pt; color: #1565c0; background: #fff; padding: 4px 10px; border-radius: 4px; border: 1px solid #bbdefb; }
+
+.btn-mock { display: inline-block; padding: 10px 24px; background: linear-gradient(135deg,#34d399,#10b981); color: #fff; border-radius: 10px; font-weight: 600; font-size: 12pt; margin: 6px; }
+.arrow { text-align: center; font-size: 18pt; color: #999; padding: 4px 0; }
+
+ul { list-style: none; padding: 0; }
+ul li { padding: 6px 0; font-size: 11pt; color: #444; }
+ul li::before { content: '● '; color: #1976d2; font-weight: bold; }
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Figura 8.1: Regjistrimi i një sensori fizik në dashboard</h2>
+<div class="panel">
+  <div class="step">
+    <div class="step-num">1</div>
+    <div class="step-desc">Shko te skeda <strong>"Pajisjet"</strong> në dashboard</div>
+  </div>
+  <div class="step">
+    <div class="step-num">2</div>
+    <div class="step-desc">Kliko <strong>"🌡️ Sensor temperature"</strong></div>
+  </div>
+  <div class="arrow">↓</div>
+  <div style="text-align:center;padding:6px"><span class="btn-mock">🌡️ Sensor temperature</span></div>
+  <div class="arrow">↓</div>
+  <div class="creds">
+    <div style="font-weight:600;margin-bottom:10px;color:#1565c0;">✅ Sensor i regjistruar!</div>
+    <div class="cred-row">
+      <span class="cred-label">Ingest URL</span>
+      <span class="cred-value">http://192.168.1.100:8000/api/v1/ingest</span>
+    </div>
+    <div class="cred-row">
+      <span class="cred-label">Device ID</span>
+      <span class="cred-value">wifi-a1b2c3d4</span>
+    </div>
+    <div class="cred-row">
+      <span class="cred-label">API Key (secret)</span>
+      <span class="cred-value">xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx</span>
+    </div>
+  </div>
+  <ul>
+    <li><strong>Device ID</strong> — identifikues unik i pajisjes; dërgohet si header X-Device-Id</li>
+    <li><strong>API Key</strong> — çelës sekret për autentifikim; dërgohet si header X-Device-Key</li>
+    <li><strong>Ingest URL</strong> — adresa ku dërgohen të dhënat (POST)</li>
+  </ul>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body { background: #fff; font-family: 'Segoe UI', Arial, sans-serif; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 40px; }
+
+.container { max-width: 1000px; width: 100%; text-align: center; }
+
+h2 { font-size: 14pt; color: #333; margin-bottom: 30px; font-weight: normal; }
+
+.diagram { display: flex; flex-direction: column; align-items: center; gap: 12px; }
+
+.row { display: flex; justify-content: center; align-items: center; gap: 40px; flex-wrap: wrap; }
+
+.box { background: #f0f4ff; border: 2px solid #4a7dcc; border-radius: 10px; padding: 16px 24px; text-align: center; min-width: 140px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.box h3 { font-size: 12pt; color: #2a5db0; margin-bottom: 4px; }
+.box p { font-size: 10pt; color: #555; }
+
+.box.green { background: #e8f8e8; border-color: #4caf50; }
+.box.green h3 { color: #2e7d32; }
+.box.orange { background: #fff3e0; border-color: #ff9800; }
+.box.orange h3 { color: #e65100; }
+.box.purple { background: #f3e5f5; border-color: #9c27b0; }
+.box.purple h3 { color: #6a1b9a; }
+.box.teal { background: #e0f7fa; border-color: #00acc1; }
+.box.teal h3 { color: #006064; }
+.box.red { background: #fce4ec; border-color: #e53935; }
+.box.red h3 { color: #c62828; }
+
+.arrow { font-size: 22pt; color: #999; }
+.arrow-label { font-size: 8pt; color: #888; margin-top: -6px; }
+
+.protocol { font-size: 9pt; color: #666; margin-top: 4px; }
+
+.cloud { background: #e8eaf6; border: 2px dashed #5c6bc0; border-radius: 50px; padding: 20px 40px; text-align: center; }
+.cloud h3 { font-size: 12pt; color: #3949ab; }
+
+hr { border: none; border-top: 1px solid #ddd; margin: 6px 0; }
+</style>
+</head>
+<body>
+<div class="container">
+<h2>Figura 3.1: Arkitektura e përgjithshme e sistemit</h2>
+<div class="diagram">
+  <div class="row">
+    <div class="box">
+      <h3>ESP32 + DHT22</h3>
+      <p>Sensori fizik</p>
+      <p class="protocol">Mat çdo 5s</p>
+    </div>
+    <div class="arrow">→</div>
+    <div class="box orange">
+      <h3>Tuya TH06</h3>
+      <p>Sensori komercial</p>
+      <p class="protocol">Poll çdo 30s</p>
+    </div>
+  </div>
+
+  <div class="arrow">↓ HTTP POST /api/v1/ingest</div>
+  <div class="arrow-label">JSON: {device_id, temp, humidity, timestamp}</div>
+
+  <div class="box" style="border-color:#1565c0; background:#e3f2fd; padding:24px 40px;">
+    <h3 style="color:#1565c0;">FastAPI Server</h3>
+    <p style="font-size:9pt; color:#555;">Python · Uvicorn · Port 8000</p>
+    <hr>
+    <div style="display:flex; gap:24px; justify-content:center; margin-top:8px; font-size:9pt; color:#444;">
+      <span>POST /api/v1/ingest</span>
+      <span>GET /api/v1/data</span>
+      <span>GET /api/v1/devices</span>
+      <span>POST /devices/wifi</span>
+    </div>
+    <div style="display:flex; gap:24px; justify-content:center; margin-top:4px; font-size:9pt; color:#444;">
+      <span>WebSocket /ws/{id}</span>
+      <span>/ai/analyze</span>
+      <span>/ai/predict</span>
+    </div>
+  </div>
+
+  <div style="display:flex; justify-content:center; gap:60px; align-items:center;">
+    <div class="arrow">↓ WebSocket</div>
+    <div class="arrow">↓ HTTP</div>
+    <div class="arrow">↓ HTTP</div>
+  </div>
+
+  <div class="row" style="gap:30px;">
+    <div class="box green">
+      <h3>Dashboard</h3>
+      <p>Chart.js · HTML/CSS</p>
+      <p class="protocol">Koha reale</p>
+    </div>
+    <div class="box purple">
+      <h3>Telegram Bot</h3>
+      <p>Alert për anomali</p>
+      <p class="protocol">Njoftim menjëherë</p>
+    </div>
+    <div class="box teal">
+      <h3>Ruajtja JSON</h3>
+      <p>Memoria + data/*.json</p>
+      <p class="protocol">500 lexime/buffer</p>
+    </div>
+  </div>
+</div>
+</div>
+</body>
+</html>
